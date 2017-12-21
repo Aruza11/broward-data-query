@@ -1,0 +1,3 @@
+"0","#process content "
+"0","evdocs_content<-content(eventsdocs)"
+"0","eventlist<-evdocs_content[3]"

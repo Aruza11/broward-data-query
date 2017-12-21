@@ -1,0 +1,5 @@
+"0","casenumber<-""16000333CF10A"""
+"0","url_broward<-""https://api.browardclerk.org/api/"""
+"0","request=""events_and_documents"""
+"0","key<-""Lo5Mt6EEJIwDILvpusItyvDntLsLqMwuMGzrvLFDsKzDsnypquI3JD6CLKoopLxwvnypttCKEqGnGs6sF9EKFnr21qD4MJFnvEwovDwqtp73nzCtyEGzJrsy8K4rsD9tFEGvKp8pspEyxrGw0oxtEF2HFoD1KrHGGExttDHJCF2yz1zoDuDxnpxnuwsJo8rK7H1GspGGIxxFztDLutDyqHGDrvF3sHJsyxwzLCwDJnMCnMw3CMsHvzrLEK"""
+"0","eventsdocs<-GET(url=paste0(url_broward,'case/',casenumber,'/',request,'.json?auth_key=',key))"

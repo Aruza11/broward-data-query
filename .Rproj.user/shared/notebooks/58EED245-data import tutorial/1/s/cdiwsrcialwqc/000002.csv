@@ -1,0 +1,6 @@
+"0","#Apply function across all list elements to extract name/address of each repo "
+"0","repo_df<-lapply(repo_content,function(x){"
+"0","  df<-data_frame(repo     = x$name,"
+"0","                 address  =x$html_url,"
+"0","                 commits  =x$git_commits_url)"
+"0","}) %>% bind_rows()"

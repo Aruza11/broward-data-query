@@ -1,0 +1,6 @@
+"0","evdoc_df<-lapply(eventlist[1],function(x){"
+"0","  df<-data_frame(eventDate=x$EventDate,"
+"0","                 evDescrip=x$Description)"
+"0","})   %>%bind_rows()"
+"2","Error: Columns `eventDate`, `evDescrip` must be 1d atomic vectors or lists
+"

@@ -1,0 +1,6 @@
+"0","#Save username as variable "
+"0","username<- 'tclavelle'"
+"0","#Save base enpoint as var"
+"0","url_git<-'https://api.github.com/'"
+"0","#Construct API request"
+"0","repos<-GET(url=paste0(url_git,'users/',username,'/repos'))"

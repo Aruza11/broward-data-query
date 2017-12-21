@@ -1,0 +1,6 @@
+"0","#repo url"
+"0","url_repo<-repo_df$commits[repo_df$repo=='sfg-aqua']"
+"0","#clean the url"
+"0","url_repo<-gsub(url_repo,pattern='git/commits{/sha}',replacement='commits',fixed=TRUE)"
+"0","#API request"
+"0","commits<-GET(url=url_repo)"

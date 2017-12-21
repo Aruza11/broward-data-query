@@ -1,0 +1,87 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+Currently following tutorial
+```{r}
+# Load packages
+library(tidyverse)
+library(httr)
+library(jsonlite)
+
+```
+
+```{r}
+#Save username as variable 
+username<- 'tclavelle'
+
+#Save base enpoint as var
+url_git<-'https://api.github.com/'
+
+#Construct API request
+repos<-GET(url=paste0(url_git,'users/',username,'/repos'))
+```
+
+Status code quick ref: 
+1XX - Informational
+2XX - Success!
+3XX - Client Error (something’s not right on your end)
+4XX - Server Error (something’s not right on their end)
+
+
+```{r}
+#Process API request content
+repo_content=content(repos)
+```
+
+
+```{r}
+#Apply function across all list elements to extract name/address of each repo 
+
+repo_df<-lapply(repo_content,function(x){
+  df<-data_frame(repo     = x$name,
+                 address  =x$html_url,
+                 commits  =x$git_commits_url)
+}) %>% bind_rows()
+```
+
+```{r}
+View(repo_df)
+```
+
+repo_content list has a lot of useful information. 
+For each repo, most of list elements are additional API endpoint urls (tell us where we can request additional data on given repo)
+
+```{r}
+#repo url
+url_repo<-repo_df$commits[repo_df$repo=='sfg-aqua']
+
+#clean the url
+url_repo<-gsub(url_repo,pattern='git/commits{/sha}',replacement='commits',fixed=TRUE)
+
+#API request
+commits<-GET(url=url_repo)
+
+```
+
+```{r}
+#Get content: 
+#commits_content<-content(commits)
+#better method below: 
+commits_df<-fromJSON(txt=url_repo)
+```
+
+
+
+
+
+
