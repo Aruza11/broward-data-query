@@ -1,0 +1,72 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+```{r}
+library(stringr)
+library(tidyverse)
+```
+
+
+testing code
+```{r}
+mtcars
+map_df(mtcars,mean)
+```
+
+
+
+```{r}
+# Connect to the database
+db <- src_sqlite("C:/Users/Caroline Wang/OneDrive/Duke/Criminal Recidivism/crim-recid-code/compas-analysis/compas.db", create = TRUE)
+
+# List all the tables
+table_names <- src_tbls(db)
+table_names
+```
+
+```{r}
+casearrest_df <- tbl(db,"casearrest")
+charge_df <- tbl(db,"charge")
+compas_df <- tbl(db,"compas")
+jailhistory_df <-tbl(db,"jailhistory")
+prisonhistory_df <-tbl(db,"prisonhistory")
+people_df<-tbl(db,"people")
+```
+
+Creating a new df from a subset of compas_df, altering names of some columns
+```{r}
+loopdf=select(compas_df,person_id,screening_date)
+chargenew=select(charge_df,person_id,case_number)
+loopdf=left_join(loopdf, chargenew, by="person_id")
+#consider adding the variables, charge_number and charge
+#will need charge number later so I can do dispositions
+loopdf<-as_data_frame(distinct(select(person_id,case_number)))
+View(loopdf)
+```
+
+filtering criteria
+1) Crimes >30 days within compas score screening date
+2) Crimes before posted DOB
+3) People with duplicate names
+4)
+4) People with NAS after all filtering criteria applied (?)
+```{r}
+
+```
+
+
+Write df to working directory
+```{r}
+#write.csv(loopdf, "loopdf.csv") 
+```
+

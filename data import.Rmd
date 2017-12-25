@@ -31,9 +31,9 @@ eventsdocs<-GET(url=paste0(url_broward,'case/',casenumber,'/',request,'.json?aut
 save as .txt file 
 ```{r}
 filename=paste(casenumber,"eventsdocs.txt", sep="")
-bin<-content(eventsdocs,"raw")
-writeBin(bin, filename)
-#json_data<-fromJSON(file=filename)
+raw<-content(eventsdocs,"raw")
+writeBin(raw, filename)
+json_data<-fromJSON(txt=raw)
 ```
 
 
