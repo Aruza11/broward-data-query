@@ -12,55 +12,117 @@ Try executing this chunk by clicking the *Run* button within the chunk or by pla
 library(tidyverse)
 library(httr)
 library(jsonlite)
+library(mongolite)
+```
+
+```{r}
+loopdf<-read.csv(file="loopdf.csv") 
+loopdf%>%
+  slice(1:20)%>%
+  select(person_id, case_number)
+
+sample<-loopdf
+sample$case_number<-as.character(sample$case_number)
+sample$person_id<-as.numeric(sample$person_id)
+
 ```
 
 
-Make sure to log in before running this code. 
-Write functions (create an API)
+running functions
 ```{r}
-casenumber<-"16000333CF10A"
+pb <- progress_estimated(length(sample$case_number))
 
-url_broward<-"https://api.browardclerk.org/api/"
+api_call<-function(casenumber,request){
+  pb$tick()$print()
+  Sys.sleep(sample(seq(0.5, 2.5, 0.5), 1)) #time delay between calls
+
+  eventsdocs<-getJSON(casenumber ,request)
+  file<-writeToSystem(eventsdocs,casenumber,"eventsdocs.txt")
+  json_fromfile<-fromJSON(txt=file)
+  #a list df hybrid
+  json_df<-json_fromfile$EventList #a dataframe
+  return(json_df)
+}
+
+safe_api_call<-safely(api_call)
+eventsdocs_df<-map_df(sample$case_number, safe_api_call(.case_number,"events_and_documents"), .case_number = "case_number",.person_id = "person_id")
+  
+#What would happen if it's too big to store in my environment
+write.csv(eventsdocs_df,"eventsdocs_df.csv")
+
+```
+
+
+*this function returns a json string from the Broward Clerk's website *
+idea: create API wrapper
+***Must log in before running code***
+```{r}
+getJSON<-function(casenumber,request_type){
+  url_broward<-"https://api.browardclerk.org/api/"
+  key<-"Lo5Mt6EEJIwDILvpusItyvDntLsLqMwuMGzrvLFDsKzDsnypquI3JD6CLKoopLxwvnypttCKEqGnGs6sF9EKFnr21qD4MJFnvEwovDwqtp73nzCtyEGzJrsy8K4rsD9tFEGvKp8pspEyxrGw0oxtEF2HFoD1KrHGGExttDHJCF2yz1zoDuDxnpxnuwsJo8rK7H1GspGGIxxFztDLutDyqHGDrvF3sHJsyxwzLCwDJnMCnMw3CMsHvzrLEK"
+
+  eventsdocs<-RETRY("GET", url=paste0(url_broward,'case/',casenumber,'/',request_type,'.json?auth_key=',key),times=5)
+    #retries until http_error (boolean) returns false; true if status code is 400+
+    #retries max of 5x; 1 sec pauses between tries
+  return(eventsdocs) #r automatically returns last line but we'll explicitly return this here
+}
+
+```
+
+takes a json HTTP response and saves it as .txt file 
+a "void" function
+```{r}
+writeToSystem<-function(json_response,casenumber, filetype){
+  filename=paste(casenumber,filetype, sep="")
+  raw<-content(json_response,"raw")
+#  invisible(writeBin(raw, filename))
+  writeBin(raw,filename)
+  return(filename)
+}
+```
+
+Testing mongo
+```{r}
+m <- mongo("diamonds")
+m$insert(ggplot2::diamonds)
+```
+
+Test call to api
+```{r}
+casenum<-"16000333CF10A"
 request="events_and_documents"
-key<-"Lo5Mt6EEJIwDILvpusItyvDntLsLqMwuMGzrvLFDsKzDsnypquI3JD6CLKoopLxwvnypttCKEqGnGs6sF9EKFnr21qD4MJFnvEwovDwqtp73nzCtyEGzJrsy8K4rsD9tFEGvKp8pspEyxrGw0oxtEF2HFoD1KrHGGExttDHJCF2yz1zoDuDxnpxnuwsJo8rK7H1GspGGIxxFztDLutDyqHGDrvF3sHJsyxwzLCwDJnMCnMw3CMsHvzrLEK"
+eventsdocs<-getJSON(casenum,request)
+#writeToSystem(eventsdocs,casenum,"eventsdocs.txt")
 
-eventsdocs<-GET(url=paste0(url_broward,'case/',casenumber,'/',request,'.json?auth_key=',key))
-#length of eventsdocs is 10, class=response
-#http_type(eventsdocs) is [1] "application/json"
-```
-save as .txt file 
-```{r}
-filename=paste(casenumber,"eventsdocs.txt", sep="")
-raw<-content(eventsdocs,"raw")
-writeBin(raw, filename)
-json_data<-fromJSON(txt=raw)
 ```
 
 
-
-
+Test processing with jsonlite
+Findings: json_fromfile is the same as json_fromurl
+Either way i do it, should probably do the http request just so I can check status
 ```{r}
-#process content 
-evdocs_content<-content(eventsdocs)
-eventlist<-evdocs_content[3]
-list<- eventlist$EventList[[8]]$PartyList
+#test with reading from file
+json_fromfile<-fromJSON(txt=filename)
+#a list dfhybrid
+json_df<-json_fromfile$EventList #a dataframe
+names(json_df$PartyList[1])
+
+# #test with reading from url
+# request_type="events_and_documents"
+# casenumber<-"16000333CF10A"
+# json_fromurl<-fromJSON(txt=paste0(url_broward,'case/',casenumber,'/',request_type,'.json?auth_key=',key))
 #just need the description of each event, don't need anything else
-#idea: take the headings of eventlist as my data--somehow get date?
-#from public case viewer, I know there are 13 events/docs listed
-#from the length command: length(eventlist)=1, length(evelist$EventList)=13)
 #from command print(eventlist$EventList): each element of eventlist$EventList has $EventDate, $Description, $EventAmount, $AdditionalText, $PartyList, $Party2List, $CauseList, 
 #$EventDocumentList, $EventDocumentList$Name, $EventDocumentList$Page, $eventDocument$Confidential
 
 ```
 
 
+process with tidyjson
 ```{r}
-evdoc_df<-lapply(eventlist[1],function(x){
-  df<-data_frame(eventDate=x$EventDate,
-                 evDescrip=x$Description)
-})   %>%bind_rows()
-View(evdoc_df)
+
 ```
+
 
 
 

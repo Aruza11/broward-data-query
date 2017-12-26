@@ -46,11 +46,12 @@ people_df<-tbl(db,"people")
 Creating a new df from a subset of compas_df, altering names of some columns
 ```{r}
 loopdf=select(compas_df,person_id,screening_date)
+View(loopdf)
 chargenew=select(charge_df,person_id,case_number)
 loopdf=left_join(loopdf, chargenew, by="person_id")
 #consider adding the variables, charge_number and charge
 #will need charge number later so I can do dispositions
-loopdf<-as_data_frame(distinct(select(person_id,case_number)))
+loopdf<-as_data_frame(distinct(select(loopdf,person_id,case_number)))
 View(loopdf)
 ```
 
@@ -67,6 +68,6 @@ filtering criteria
 
 Write df to working directory
 ```{r}
-#write.csv(loopdf, "loopdf.csv") 
+write.csv(loopdf, "loopdf.csv") 
 ```
 
