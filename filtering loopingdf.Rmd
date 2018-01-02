@@ -17,14 +17,6 @@ library(tidyverse)
 ```
 
 
-testing code
-```{r}
-mtcars
-map_df(mtcars,mean)
-```
-
-
-
 ```{r}
 # Connect to the database
 db <- src_sqlite("C:/Users/Caroline Wang/OneDrive/Duke/Criminal Recidivism/crim-recid-code/compas-analysis/compas.db", create = TRUE)
@@ -43,7 +35,14 @@ prisonhistory_df <-tbl(db,"prisonhistory")
 people_df<-tbl(db,"people")
 ```
 
-Creating a new df from a subset of compas_df, altering names of some columns
+Creating a new df from a subset of compas_df,chargenew,peopleneew
+Rows in df: person_id, screening_date, case_number, date_charge_filed, dob
+Converted to dataframe
+n(df)
+<int>
+489036				
+1 row
+
 ```{r}
 df=select(compas_df,person_id,screening_date)
 chargenew=select(charge_df,person_id,case_number,date_charge_filed)
@@ -59,11 +58,13 @@ summarise(df,n())
 #consider adding the variables, charge_number and charge
 #will need charge number later so I can do dispositions
 ```
-Rows in df: person_id, screening_date, case_number, date_charge_filed, dob
+
 
 
 filtering criteria
 1) remove people with compas score screening date>30 days from any crime date 
+nrow(df): [1] 489036
+nrow(df1): [1] 439359
 ```{r}
 nrow(df)
 df$screening_date=as.Date(df$screening_date)
@@ -75,6 +76,8 @@ compas_30<-df%>%
         group_by(person_id)%>%
            summarize(valid_screen_date=(sum(within_30)>0)) #Boolean, number of cases within 30 days for each person is >0
 
+#the removed cases
+filter(compas_30, valid_screen_date==F)
 
 df1<-df%>%
       left_join(compas_30, by="person_id")%>%
@@ -85,31 +88,51 @@ nrow(df1)
 
 ```
 
-2) check if any people have charge date before dob
-```{r}
-nrow(df)
-df2<-filter(df, !((date_charge_filed>dob) | is.na(date_charge_filed) | is.na(dob)))
-df2 #the cases that were removed; all have dob=date_charge_filed
+2) check if any people have charge date <= dob
+Result: the only cases which satisfy this are charge date==dob; only 36 rows satisfied this
+Decided to retain these rows (can always remove later)
 
-df<-filter(df, (date_charge_filed>dob) | is.na(date_charge_filed) | is.na(dob))
-nrow(df)
+nrow(df1)[1] 439359
+nrow(df2)[1] 439323
+```{r}
+#nrow(df1)
+#invalid_charge_date<-filter(df1, !((date_charge_filed>dob) | is.na(date_charge_filed) | is.na(dob)))
+#invalid_charge_date #the cases that were removed; all have dob=date_charge_filed
+
+#df2<-filter(df1, (date_charge_filed>dob) | is.na(date_charge_filed) | is.na(dob))
+#nrow(df2)
 
 ```
 
 
-3) check number of duplicate cases (independent of person IDs)
+3) check number of unique cases in the dataset, vs #unique cases per person
+Result: found a discrepancy of approximately 2; not worth removing overlap cases
+nrow(unique_cases_df1):[1] 72747
+nrow(unique_by_person):[1] 72749
 ```{r}
-numcases<-nrow(distinct(select(df,case_number))) #80085
-loopdf<-as_data_frame(distinct(select(df,person_id,case_number)))
-checkdups<-nrow(loopdf) #80702
-#discrepancy of ~650, not worth fixing 
-numcases
-checkdups
+unique_cases_df1<-df1%>%
+                    select(case_number)%>%
+                    distinct()%>%
+                    nrow()
+
+loopdf<-df1%>%
+          select(person_id,case_number)%>%
+          distinct()
+  #check work using group by
+
+  #        group_by(person_id)%>%
+   #         summarise(n_distinctcases=n_distinct(case_number))
+loopdf
+#sum(loopdf$n_distinctcases) #gives same result as original method
+unique_by_person<-nrow(loopdf) 
+
+unique_cases_df1
+unique_by_person
 ```
 
 
 Write df to working directory
 ```{r}
-write.csv(loopdf, "loopdf.csv") 
+#write.csv(loopdf, "loopdf.csv") 
 ```
 

@@ -176,84 +176,80 @@ $(document).ready(function () {
 <p>Try executing this chunk by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Ctrl+Shift+Enter</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHBhY2thZ2VzXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHBhY2thZ2VzXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmxpYnJhcnkoaHR0cilcbmxpYnJhcnkoanNvbmxpdGUpXG5saWJyYXJ5KG1hZ3JpdHRyKVxuI2xpYnJhcnkobW9uZ29saXRlKVxuYGBgIn0= -->
 <pre class="r"><code># Load packages
-library(tidyverse)</code></pre>
+library(tidyverse)
+library(httr)
+library(jsonlite)
+library(magrittr)
+#library(mongolite)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZyBtZXNzYWdlOlxuSW4gc2NhbihmaWxlID0gZmlsZSwgd2hhdCA9IHdoYXQsIHNlcCA9IHNlcCwgcXVvdGUgPSBxdW90ZSwgZGVjID0gZGVjLCAgOlxuICBFT0Ygd2l0aGluIHF1b3RlZCBzdHJpbmdcbiJ9 -->
-<pre><code>Warning message:
-In scan(file = file, what = what, sep = sep, quote = quote, dec = dec,  :
-  EOF within quoted string</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShodHRyKVxuYGBgIn0= -->
-<pre class="r"><code>library(httr)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSDjpLzjuLFodHRy46S847iyIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy40LjNcbiJ9 -->
-<pre><code>package &lt;U+393C&gt;&lt;U+3E31&gt;httr&lt;U+393C&gt;&lt;U+3E32&gt; was built under R version 3.4.3</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShqc29ubGl0ZSlcbmBgYCJ9 -->
-<pre class="r"><code>library(jsonlite)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSDjpLzjuLFqc29ubGl0ZeOkvOO4siB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDMuNC4zXG5BdHRhY2hpbmcgcGFja2FnZTog46S847ixanNvbmxpdGXjpLzjuLJcblxuVGhlIGZvbGxvd2luZyBvYmplY3QgaXMgbWFza2VkIGZyb20g46S847ixcGFja2FnZTpwdXJycuOkvOO4sjpcblxuICAgIGZsYXR0ZW5cbiJ9 -->
-<pre><code>package &lt;U+393C&gt;&lt;U+3E31&gt;jsonlite&lt;U+393C&gt;&lt;U+3E32&gt; was built under R version 3.4.3
-Attaching package: &lt;U+393C&gt;&lt;U+3E31&gt;jsonlite&lt;U+393C&gt;&lt;U+3E32&gt;
-
-The following object is masked from &lt;U+393C&gt;&lt;U+3E31&gt;package:purrr&lt;U+393C&gt;&lt;U+3E32&gt;:
-
-    flatten</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FzZW51bWJlcjwtXCIxNjAwMDMzM0NGMTBBXCJcbmBgYCJ9 -->
-<pre class="r"><code>casenumber&lt;-&quot;16000333CF10A&quot;</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZyBtZXNzYWdlOlxuSW4gc2NhbihmaWxlID0gZmlsZSwgd2hhdCA9IHdoYXQsIHNlcCA9IHNlcCwgcXVvdGUgPSBxdW90ZSwgZGVjID0gZGVjLCAgOlxuICBFT0Ygd2l0aGluIHF1b3RlZCBzdHJpbmdcbiJ9 -->
-<pre><code>Warning message:
-In scan(file = file, what = what, sep = sep, quote = quote, dec = dec,  :
-  EOF within quoted string</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudXJsX2Jyb3dhcmQ8LVwiaHR0cHM6Ly9hcGkuYnJvd2FyZGNsZXJrLm9yZy9hcGkvXCJcbnJlcXVlc3Q9XCJldmVudHNfYW5kX2RvY3VtZW50c1wiXG5rZXk8LVwiTG81TXQ2RUVKSXdESUx2cHVzSXR5dkRudExzTHFNd3VNR3pydkxGRHNLekRzbnlwcXVJM0pENkNMS29vcEx4d3ZueXB0dENLRXFHbkdzNnNGOUVLRm5yMjFxRDRNSkZudkV3b3ZEd3F0cDczbnpDdHlFR3pKcnN5OEs0cnNEOXRGRUd2S3A4cHNwRXl4ckd3MG94dEVGMkhGb0QxS3JIR0dFeHR0REhKQ0YyeXoxem9EdUR4bnB4bnV3c0pvOHJLN0gxR3NwR0dJeHhGenRETHV0RHlxSEdEcnZGM3NISnN5eHd6TEN3REpuTUNuTXczQ01zSHZ6ckxFS1wiXG5ldmVudHNkb2NzPC1HRVQodXJsPXBhc3RlMCh1cmxfYnJvd2FyZCwnY2FzZS8nLGNhc2VudW1iZXIsJy8nLHJlcXVlc3QsJy5qc29uP2F1dGhfa2V5PScsa2V5KSlcbmBgYCJ9 -->
-<pre class="r"><code>url_broward&lt;-&quot;https://api.browardclerk.org/api/&quot;
-request=&quot;events_and_documents&quot;
-key&lt;-&quot;Lo5Mt6EEJIwDILvpusItyvDntLsLqMwuMGzrvLFDsKzDsnypquI3JD6CLKoopLxwvnypttCKEqGnGs6sF9EKFnr21qD4MJFnvEwovDwqtp73nzCtyEGzJrsy8K4rsD9tFEGvKp8pspEyxrGw0oxtEF2HFoD1KrHGGExttDHJCF2yz1zoDuDxnpxnuwsJo8rK7H1GspGGIxxFztDLutDyqHGDrvF3sHJsyxwzLCwDJnMCnMw3CMsHvzrLEK&quot;
-eventsdocs&lt;-GET(url=paste0(url_broward,'case/',casenumber,'/',request,'.json?auth_key=',key))</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9vcGRmPC1yZWFkLmNzdihmaWxlPVwibG9vcGRmLmNzdlwiKSBcbmxvb3BkZjwtc2VsZWN0KGxvb3BkZiwgcGVyc29uX2lkLCBjYXNlX251bWJlcilcbnNhbXBsZTwtc2xpY2UobG9vcGRmLDE6MilcbnNhbXBsZSRjYXNlX251bWJlcjwtYXMuY2hhcmFjdGVyKHNhbXBsZSRjYXNlX251bWJlcilcbnNhbXBsZSRwZXJzb25faWQ8LWFzLm51bWVyaWMoc2FtcGxlJHBlcnNvbl9pZClcbmBgYCJ9 -->
+<pre class="r"><code>loopdf&lt;-read.csv(file=&quot;loopdf.csv&quot;) 
+loopdf&lt;-select(loopdf, person_id, case_number)
+sample&lt;-slice(loopdf,1:2)
+sample$case_number&lt;-as.character(sample$case_number)
+sample$person_id&lt;-as.numeric(sample$person_id)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>running functions</p>
+<p>running functions safe_api_call(casenumber, request_type) casenumber is a string</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuanNvbl9kYXRhPC1mcm9tSlNPTih0eHQ9cmF3KVxuXG5gYGAifQ== -->
-<pre class="r"><code>json_data&lt;-fromJSON(txt=raw)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGZfYXNfbGlzdDwtc2FtcGxlJT4lXG4gICAgICAgICAgICAgIGxhcHBseSh3aXRoKC4sc3BsaXQoLixzZXEobnJvdyguKSkpKSxhcy5saXN0KVxuXG5gYGAifQ== -->
+<pre class="r"><code>df_as_list&lt;-sample%&gt;%
+              lapply(with(.,split(.,seq(nrow(.)))),as.list)
 </code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IEFyZ3VtZW50ICd0eHQnIG11c3QgYmUgYSBKU09OIHN0cmluZywgVVJMIG9yIGZpbGUuXG4ifQ== -->
-<pre><code>Error: Argument 'txt' must be a JSON string, URL or file.</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gbWF0Y2guZnVuKEZVTikgOiBcbiAgJ3dpdGgoLiwgc3BsaXQoLiwgc2VxKG5yb3coLikpKSknIGlzIG5vdCBhIGZ1bmN0aW9uLCBjaGFyYWN0ZXIgb3Igc3ltYm9sXG4ifQ== -->
+<pre><code>Error in match.fun(FUN) : 
+  'with(., split(., seq(nrow(.))))' is not a function, character or symbol</code></pre>
 <!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1doYXQgd291bGQgaGFwcGVuIGlmIGl0J3MgdG9vIGJpZyB0byBzdG9yZSBpbiBteSBlbnZpcm9ubWVudFxud3JpdGUuY3N2KGV2ZW50c2RvY3NfZGYsXCJldmVudHNkb2NzX2RmLmNzdlwiKVxuXG5gYGAifQ== -->
+<pre class="r"><code>#What would happen if it's too big to store in my environment
+write.csv(eventsdocs_df,&quot;eventsdocs_df.csv&quot;)
+</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p><em>this function returns a json string from the Broward Clerk’s website </em> idea: create API wrapper <strong><em>Must log in before running code</em></strong></p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI3Byb2Nlc3MgY29udGVudCBcbmV2ZG9jc19jb250ZW50PC1jb250ZW50KGV2ZW50c2RvY3MpXG5ldmVudGxpc3Q8LWV2ZG9jc19jb250ZW50WzNdXG5gYGAifQ== -->
-<pre class="r"><code>#process content 
-evdocs_content&lt;-content(eventsdocs)
-eventlist&lt;-evdocs_content[3]</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2V0SlNPTjwtZnVuY3Rpb24oY2FzZW51bWJlcixyZXF1ZXN0X3R5cGUpe1xuICB1cmxfYnJvd2FyZDwtXCJodHRwczovL2FwaS5icm93YXJkY2xlcmsub3JnL2FwaS9cIlxuICBrZXk8LVwiTG81TXQ2RUVKSXdESUx2cHVzSXR5dkRudExzTHFNd3VNR3pydkxGRHNLekRzbnlwcXVJM0pENkNMS29vcEx4d3ZueXB0dENLRXFHbkdzNnNGOUVLRm5yMjFxRDRNSkZudkV3b3ZEd3F0cDczbnpDdHlFR3pKcnN5OEs0cnNEOXRGRUd2S3A4cHNwRXl4ckd3MG94dEVGMkhGb0QxS3JIR0dFeHR0REhKQ0YyeXoxem9EdUR4bnB4bnV3c0pvOHJLN0gxR3NwR0dJeHhGenRETHV0RHlxSEdEcnZGM3NISnN5eHd6TEN3REpuTUNuTXczQ01zSHZ6ckxFS1wiXG5cbiAgZXZlbnRzZG9jczwtUkVUUlkoXCJHRVRcIiwgdXJsPXBhc3RlMCh1cmxfYnJvd2FyZCwnY2FzZS8nLGNhc2VudW1iZXIsJy8nLHJlcXVlc3RfdHlwZSwnLmpzb24/YXV0aF9rZXk9JyxrZXkpLHRpbWVzPTUpXG4gICAgI3JldHJpZXMgdW50aWwgaHR0cF9lcnJvciAoYm9vbGVhbikgcmV0dXJucyBmYWxzZTsgdHJ1ZSBpZiBzdGF0dXMgY29kZSBpcyA0MDArXG4gICAgI3JldHJpZXMgbWF4IG9mIDV4OyAxIHNlYyBwYXVzZXMgYmV0d2VlbiB0cmllc1xuICByZXR1cm4oZXZlbnRzZG9jcykgI3IgYXV0b21hdGljYWxseSByZXR1cm5zIGxhc3QgbGluZSBidXQgd2UnbGwgZXhwbGljaXRseSByZXR1cm4gdGhpcyBoZXJlXG59XG5cbmBgYCJ9 -->
+<pre class="r"><code>getJSON&lt;-function(casenumber,request_type){
+  url_broward&lt;-&quot;https://api.browardclerk.org/api/&quot;
+  key&lt;-&quot;Lo5Mt6EEJIwDILvpusItyvDntLsLqMwuMGzrvLFDsKzDsnypquI3JD6CLKoopLxwvnypttCKEqGnGs6sF9EKFnr21qD4MJFnvEwovDwqtp73nzCtyEGzJrsy8K4rsD9tFEGvKp8pspEyxrGw0oxtEF2HFoD1KrHGGExttDHJCF2yz1zoDuDxnpxnuwsJo8rK7H1GspGGIxxFztDLutDyqHGDrvF3sHJsyxwzLCwDJnMCnMw3CMsHvzrLEK&quot;
+
+  eventsdocs&lt;-RETRY(&quot;GET&quot;, url=paste0(url_broward,'case/',casenumber,'/',request_type,'.json?auth_key=',key),times=5)
+    #retries until http_error (boolean) returns false; true if status code is 400+
+    #retries max of 5x; 1 sec pauses between tries
+  return(eventsdocs) #r automatically returns last line but we'll explicitly return this here
+}
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>takes a json HTTP response and saves it as .txt file a “void” function</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZXZkb2NfZGY8LWxhcHBseShldmVudGxpc3RbMV0sZnVuY3Rpb24oeCl7XG4gIGRmPC1kYXRhX2ZyYW1lKGV2ZW50RGF0ZT14JEV2ZW50RGF0ZSxcbiAgICAgICAgICAgICAgICAgZXZEZXNjcmlwPXgkRGVzY3JpcHRpb24pXG59KSAgICU+JWJpbmRfcm93cygpXG5gYGBcbmBgYCJ9 -->
-<p><code>r</code>r evdoc_df&lt;-lapply(eventlist[1],function(x){ df&lt;-data_frame(eventDate=x<span class="math inline">\(EventDate,  evDescrip=x\)</span>Description) }) %&gt;%bind_rows()</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG53cml0ZVRvU3lzdGVtPC1mdW5jdGlvbihqc29uX3Jlc3BvbnNlLGNhc2VudW1iZXIsIGZpbGV0eXBlKXtcbiAgZmlsZW5hbWU9cGFzdGUoY2FzZW51bWJlcixmaWxldHlwZSwgc2VwPVwiXCIpXG4gIHJhdzwtY29udGVudChqc29uX3Jlc3BvbnNlLFwicmF3XCIpXG4jICBpbnZpc2libGUod3JpdGVCaW4ocmF3LCBmaWxlbmFtZSkpXG4gIHdyaXRlQmluKHJhdyxmaWxlbmFtZSlcbiAgcmV0dXJuKGZpbGVuYW1lKVxufVxuYGBgIn0= -->
+<pre class="r"><code>
+writeToSystem&lt;-function(json_response,casenumber, filetype){
+  filename=paste(casenumber,filetype, sep=&quot;&quot;)
+  raw&lt;-content(json_response,&quot;raw&quot;)
+#  invisible(writeBin(raw, filename))
+  writeBin(raw,filename)
+  return(filename)
+}</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IENvbHVtbnMgYGV2ZW50RGF0ZWAsIGBldkRlc2NyaXBgIG11c3QgYmUgMWQgYXRvbWljIHZlY3RvcnMgb3IgbGlzdHNcbiJ9 -->
-<pre><code>Error: Columns `eventDate`, `evDescrip` must be 1d atomic vectors or lists</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Testing mongo</p>
@@ -268,12 +264,57 @@ m$insert(ggplot2::diamonds)</code></pre>
 <p>Test call to api</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FzZW51bTwtXCIxNjAwMDMzM0NGMTBBXCJcbnJlcXVlc3Q9XCJldmVudHNfYW5kX2RvY3VtZW50c1wiXG5ldmVudHNkb2NzPC1nZXRKU09OKGNhc2VudW0scmVxdWVzdClcbiN3cml0ZVRvU3lzdGVtKGV2ZW50c2RvY3MsY2FzZW51bSxcImV2ZW50c2RvY3MudHh0XCIpXG5cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FzZW51bTwtXCIxNjAwMDMzM0NGMTBBXCJcblxuYGBgIn0= -->
 <pre class="r"><code>casenum&lt;-&quot;16000333CF10A&quot;
-request=&quot;events_and_documents&quot;
-eventsdocs&lt;-getJSON(casenum,request)
-#writeToSystem(eventsdocs,casenum,&quot;eventsdocs.txt&quot;)
 </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IHVuZXhwZWN0ZWQgbnVtZXJpYyBjb25zdGFudCBpbjpcblwiXG5jYXNlbnVtPC1cIjE2MDAwMzMzXCJcbiJ9 -->
+<pre><code>Error: unexpected numeric constant in:
+&quot;
+casenum&lt;-&quot;16000333&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Test map_dfr</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI3Rha2VzIG1wZyBhcyBpbnB1dCBhbmQgcmV0dXJucyBhIGRmXG50ZXN0aXJpczwtc2VsZWN0KGhlYWQoaXJpcyksU2VwYWwuTGVuZ3RoLCBTZXBhbC5XaWR0aClcbnNlbGY8LWZ1bmN0aW9uKHRlc3RsaXN0KXtcbiAgcHJpbnQoXCJlbnRlcmVkIGZ1bmN0aW9uXCIpXG4gIG1wZzwtdGVzdGxpc3RbMV0kbXBnXG4gIHByaW50KG1wZylcbiAgY3lsPC10ZXN0bGlzdFsyXSRjeWxcbiAgcmVzdWx0PC10ZXN0aXJpcyU+JVxuICAgICAgICAgICAgIG11bHRpcGx5X2J5KG1wZyklPiVcbiAgICAgICAgICAgICBtdXRhdGUobXVsdGJ5bXBnPW1wZyxuYW1lPWN5bClcbiAgcmV0dXJuIChyZXN1bHQpXG59XG4jdGVzdGxpc3Q9YXMubGlzdChtdGNhcnMpXG50ZXN0bGlzdDwtbXRjYXJzJT4lXG4gICAgICAgICAgICAgIGhlYWQoKSU+JVxuICAgICAgICAgICAgICBzcGxpdChzZXEobnJvdyguKSkpXG4jdGVzdGxpc3QgPC0gc3BsaXQobXRjYXJzLCBzZXEobnJvdyhtdGNhcnMpKSlcbnRlc3RjYXJzPC1tYXBfZGZyKHRlc3RsaXN0LH5zZWxmKC54KSkgI2ZpbmRpbmc6IG1hcGRmciB0YWtlcyBhIGxpc3QgYXMgaW5wdXQsIG9yIGNvZXJjZXMgZGYgY291bW5zIHRvIGxpc3RcbmBgYCJ9 -->
+<pre class="r"><code>#takes mpg as input and returns a df
+testiris&lt;-select(head(iris),Sepal.Length, Sepal.Width)
+self&lt;-function(testlist){
+  print(&quot;entered function&quot;)
+  mpg&lt;-testlist[1]$mpg
+  print(mpg)
+  cyl&lt;-testlist[2]$cyl
+  result&lt;-testiris%&gt;%
+             multiply_by(mpg)%&gt;%
+             mutate(multbympg=mpg,name=cyl)
+  return (result)
+}
+#testlist=as.list(mtcars)
+testlist&lt;-mtcars%&gt;%
+              head()%&gt;%
+              split(seq(nrow(.)))
+#testlist &lt;- split(mtcars, seq(nrow(mtcars)))
+testcars&lt;-map_dfr(testlist,~self(.x)) #finding: mapdfr takes a list as input, or coerces df coumns to list</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiZW50ZXJlZCBmdW5jdGlvblwiXG5bMV0gMjFcblsxXSBcImVudGVyZWQgZnVuY3Rpb25cIlxuWzFdIDIxXG5bMV0gXCJlbnRlcmVkIGZ1bmN0aW9uXCJcblsxXSAyMi44XG5bMV0gXCJlbnRlcmVkIGZ1bmN0aW9uXCJcblsxXSAyMS40XG5bMV0gXCJlbnRlcmVkIGZ1bmN0aW9uXCJcblsxXSAxOC43XG5bMV0gXCJlbnRlcmVkIGZ1bmN0aW9uXCJcblsxXSAxOC4xXG4ifQ== -->
+<pre><code>[1] &quot;entered function&quot;
+[1] 21
+[1] &quot;entered function&quot;
+[1] 21
+[1] &quot;entered function&quot;
+[1] 22.8
+[1] &quot;entered function&quot;
+[1] 21.4
+[1] &quot;entered function&quot;
+[1] 18.7
+[1] &quot;entered function&quot;
+[1] 18.1</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI3Nob3VsZCByZXR1cm4gZGYgd2l0aCB0aGUgbXBnKnRlc3RpcmlzXG4jRXhwZWN0ZWQgbGVuZ3RoOiBpcmlzIGxlbmd0aCAqIG10Y2FycyBsZW5ndGg7IDYqMzI9MTkyXG5gYGAifQ== -->
+<pre class="r"><code>#should return df with the mpg*testiris
+#Expected length: iris length * mtcars length; 6*32=192</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -298,14 +339,9 @@ names(json_df$PartyList[1])
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>process with tidyjson</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiANCg0KYGBge3J9DQojIExvYWQgcGFja2FnZXMNCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShodHRyKQ0KbGlicmFyeShqc29ubGl0ZSkNCmxpYnJhcnkobW9uZ29saXRlKQ0KYGBgDQoNCmBgYHtyfQ0KbG9vcGRmPC1yZWFkLmNzdihmaWxlPSJsb29wZGYuY3N2IikgDQpsb29wZGYlPiUNCiAgc2xpY2UoMToyMCklPiUNCiAgc2VsZWN0KHBlcnNvbl9pZCwgY2FzZV9udW1iZXIpDQoNCnNhbXBsZTwtbG9vcGRmDQpzYW1wbGUkY2FzZV9udW1iZXI8LWFzLmNoYXJhY3RlcihzYW1wbGUkY2FzZV9udW1iZXIpDQpzYW1wbGUkcGVyc29uX2lkPC1hcy5udW1lcmljKHNhbXBsZSRwZXJzb25faWQpDQoNCmBgYA0KDQoNCnJ1bm5pbmcgZnVuY3Rpb25zDQpgYGB7cn0NCnBiIDwtIHByb2dyZXNzX2VzdGltYXRlZChsZW5ndGgoc2FtcGxlJGNhc2VfbnVtYmVyKSkNCg0KYXBpX2NhbGw8LWZ1bmN0aW9uKGNhc2VudW1iZXIscmVxdWVzdCl7DQogIHBiJHRpY2soKSRwcmludCgpDQogIFN5cy5zbGVlcChzYW1wbGUoc2VxKDAuNSwgMi41LCAwLjUpLCAxKSkgI3RpbWUgZGVsYXkgYmV0d2VlbiBjYWxscw0KDQogIGV2ZW50c2RvY3M8LWdldEpTT04oY2FzZW51bWJlciAscmVxdWVzdCkNCiAgZmlsZTwtd3JpdGVUb1N5c3RlbShldmVudHNkb2NzLGNhc2VudW1iZXIsImV2ZW50c2RvY3MudHh0IikNCiAganNvbl9mcm9tZmlsZTwtZnJvbUpTT04odHh0PWZpbGUpDQogICNhIGxpc3QgZGYgaHlicmlkDQogIGpzb25fZGY8LWpzb25fZnJvbWZpbGUkRXZlbnRMaXN0ICNhIGRhdGFmcmFtZQ0KICByZXR1cm4oanNvbl9kZikNCn0NCg0Kc2FmZV9hcGlfY2FsbDwtc2FmZWx5KGFwaV9jYWxsKQ0KZXZlbnRzZG9jc19kZjwtbWFwX2RmKHNhbXBsZSRjYXNlX251bWJlciwgc2FmZV9hcGlfY2FsbCguY2FzZV9udW1iZXIsImV2ZW50c19hbmRfZG9jdW1lbnRzIiksIC5jYXNlX251bWJlciA9ICJjYXNlX251bWJlciIsLnBlcnNvbl9pZCA9ICJwZXJzb25faWQiKQ0KICANCiNXaGF0IHdvdWxkIGhhcHBlbiBpZiBpdCdzIHRvbyBiaWcgdG8gc3RvcmUgaW4gbXkgZW52aXJvbm1lbnQNCndyaXRlLmNzdihldmVudHNkb2NzX2RmLCJldmVudHNkb2NzX2RmLmNzdiIpDQoNCmBgYA0KDQoNCip0aGlzIGZ1bmN0aW9uIHJldHVybnMgYSBqc29uIHN0cmluZyBmcm9tIHRoZSBCcm93YXJkIENsZXJrJ3Mgd2Vic2l0ZSAqDQppZGVhOiBjcmVhdGUgQVBJIHdyYXBwZXINCioqKk11c3QgbG9nIGluIGJlZm9yZSBydW5uaW5nIGNvZGUqKioNCmBgYHtyfQ0KZ2V0SlNPTjwtZnVuY3Rpb24oY2FzZW51bWJlcixyZXF1ZXN0X3R5cGUpew0KICB1cmxfYnJvd2FyZDwtImh0dHBzOi8vYXBpLmJyb3dhcmRjbGVyay5vcmcvYXBpLyINCiAga2V5PC0iTG81TXQ2RUVKSXdESUx2cHVzSXR5dkRudExzTHFNd3VNR3pydkxGRHNLekRzbnlwcXVJM0pENkNMS29vcEx4d3ZueXB0dENLRXFHbkdzNnNGOUVLRm5yMjFxRDRNSkZudkV3b3ZEd3F0cDczbnpDdHlFR3pKcnN5OEs0cnNEOXRGRUd2S3A4cHNwRXl4ckd3MG94dEVGMkhGb0QxS3JIR0dFeHR0REhKQ0YyeXoxem9EdUR4bnB4bnV3c0pvOHJLN0gxR3NwR0dJeHhGenRETHV0RHlxSEdEcnZGM3NISnN5eHd6TEN3REpuTUNuTXczQ01zSHZ6ckxFSyINCg0KICBldmVudHNkb2NzPC1SRVRSWSgiR0VUIiwgdXJsPXBhc3RlMCh1cmxfYnJvd2FyZCwnY2FzZS8nLGNhc2VudW1iZXIsJy8nLHJlcXVlc3RfdHlwZSwnLmpzb24/YXV0aF9rZXk9JyxrZXkpLHRpbWVzPTUpDQogICAgI3JldHJpZXMgdW50aWwgaHR0cF9lcnJvciAoYm9vbGVhbikgcmV0dXJucyBmYWxzZTsgdHJ1ZSBpZiBzdGF0dXMgY29kZSBpcyA0MDArDQogICAgI3JldHJpZXMgbWF4IG9mIDV4OyAxIHNlYyBwYXVzZXMgYmV0d2VlbiB0cmllcw0KICByZXR1cm4oZXZlbnRzZG9jcykgI3IgYXV0b21hdGljYWxseSByZXR1cm5zIGxhc3QgbGluZSBidXQgd2UnbGwgZXhwbGljaXRseSByZXR1cm4gdGhpcyBoZXJlDQp9DQoNCmBgYA0KDQp0YWtlcyBhIGpzb24gSFRUUCByZXNwb25zZSBhbmQgc2F2ZXMgaXQgYXMgLnR4dCBmaWxlIA0KYSAidm9pZCIgZnVuY3Rpb24NCmBgYHtyfQ0Kd3JpdGVUb1N5c3RlbTwtZnVuY3Rpb24oanNvbl9yZXNwb25zZSxjYXNlbnVtYmVyLCBmaWxldHlwZSl7DQogIGZpbGVuYW1lPXBhc3RlKGNhc2VudW1iZXIsZmlsZXR5cGUsIHNlcD0iIikNCiAgcmF3PC1jb250ZW50KGpzb25fcmVzcG9uc2UsInJhdyIpDQojICBpbnZpc2libGUod3JpdGVCaW4ocmF3LCBmaWxlbmFtZSkpDQogIHdyaXRlQmluKHJhdyxmaWxlbmFtZSkNCiAgcmV0dXJuKGZpbGVuYW1lKQ0KfQ0KYGBgDQoNClRlc3RpbmcgbW9uZ28NCmBgYHtyfQ0KbSA8LSBtb25nbygiZGlhbW9uZHMiKQ0KbSRpbnNlcnQoZ2dwbG90Mjo6ZGlhbW9uZHMpDQpgYGANCg0KVGVzdCBjYWxsIHRvIGFwaQ0KYGBge3J9DQpjYXNlbnVtPC0iMTYwMDAzMzNDRjEwQSINCnJlcXVlc3Q9ImV2ZW50c19hbmRfZG9jdW1lbnRzIg0KZXZlbnRzZG9jczwtZ2V0SlNPTihjYXNlbnVtLHJlcXVlc3QpDQojd3JpdGVUb1N5c3RlbShldmVudHNkb2NzLGNhc2VudW0sImV2ZW50c2RvY3MudHh0IikNCg0KYGBgDQoNCg0KVGVzdCBwcm9jZXNzaW5nIHdpdGgganNvbmxpdGUNCkZpbmRpbmdzOiBqc29uX2Zyb21maWxlIGlzIHRoZSBzYW1lIGFzIGpzb25fZnJvbXVybA0KRWl0aGVyIHdheSBpIGRvIGl0LCBzaG91bGQgcHJvYmFibHkgZG8gdGhlIGh0dHAgcmVxdWVzdCBqdXN0IHNvIEkgY2FuIGNoZWNrIHN0YXR1cw0KYGBge3J9DQojdGVzdCB3aXRoIHJlYWRpbmcgZnJvbSBmaWxlDQpqc29uX2Zyb21maWxlPC1mcm9tSlNPTih0eHQ9ZmlsZW5hbWUpDQojYSBsaXN0IGRmaHlicmlkDQpqc29uX2RmPC1qc29uX2Zyb21maWxlJEV2ZW50TGlzdCAjYSBkYXRhZnJhbWUNCm5hbWVzKGpzb25fZGYkUGFydHlMaXN0WzFdKQ0KDQojICN0ZXN0IHdpdGggcmVhZGluZyBmcm9tIHVybA0KIyByZXF1ZXN0X3R5cGU9ImV2ZW50c19hbmRfZG9jdW1lbnRzIg0KIyBjYXNlbnVtYmVyPC0iMTYwMDAzMzNDRjEwQSINCiMganNvbl9mcm9tdXJsPC1mcm9tSlNPTih0eHQ9cGFzdGUwKHVybF9icm93YXJkLCdjYXNlLycsY2FzZW51bWJlciwnLycscmVxdWVzdF90eXBlLCcuanNvbj9hdXRoX2tleT0nLGtleSkpDQojanVzdCBuZWVkIHRoZSBkZXNjcmlwdGlvbiBvZiBlYWNoIGV2ZW50LCBkb24ndCBuZWVkIGFueXRoaW5nIGVsc2UNCiNmcm9tIGNvbW1hbmQgcHJpbnQoZXZlbnRsaXN0JEV2ZW50TGlzdCk6IGVhY2ggZWxlbWVudCBvZiBldmVudGxpc3QkRXZlbnRMaXN0IGhhcyAkRXZlbnREYXRlLCAkRGVzY3JpcHRpb24sICRFdmVudEFtb3VudCwgJEFkZGl0aW9uYWxUZXh0LCAkUGFydHlMaXN0LCAkUGFydHkyTGlzdCwgJENhdXNlTGlzdCwgDQojJEV2ZW50RG9jdW1lbnRMaXN0LCAkRXZlbnREb2N1bWVudExpc3QkTmFtZSwgJEV2ZW50RG9jdW1lbnRMaXN0JFBhZ2UsICRldmVudERvY3VtZW50JENvbmZpZGVudGlhbA0KDQpgYGANCg0KDQpwcm9jZXNzIHdpdGggdGlkeWpzb24NCmBgYHtyfQ0KDQpgYGANCg0KDQoNCg0KDQoNCg0KDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiANCg0KYGBge3J9DQojIExvYWQgcGFja2FnZXMNCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShodHRyKQ0KbGlicmFyeShqc29ubGl0ZSkNCmxpYnJhcnkobWFncml0dHIpDQojbGlicmFyeShtb25nb2xpdGUpDQpgYGANCg0KYGBge3J9DQpsb29wZGY8LXJlYWQuY3N2KGZpbGU9Imxvb3BkZi5jc3YiKSANCmxvb3BkZjwtc2VsZWN0KGxvb3BkZiwgcGVyc29uX2lkLCBjYXNlX251bWJlcikNCg0Kc2FtcGxlPC1zbGljZShsb29wZGYsMToyKQ0Kc2FtcGxlJGNhc2VfbnVtYmVyPC1hcy5jaGFyYWN0ZXIoc2FtcGxlJGNhc2VfbnVtYmVyKQ0Kc2FtcGxlJHBlcnNvbl9pZDwtYXMubnVtZXJpYyhzYW1wbGUkcGVyc29uX2lkKQ0KDQpgYGANCg0KDQpydW5uaW5nIGZ1bmN0aW9ucw0Kc2FmZV9hcGlfY2FsbChjYXNlbnVtYmVyLCByZXF1ZXN0X3R5cGUpIGNhc2VudW1iZXIgaXMgYSBzdHJpbmcNCmBgYHtyfQ0Kc2V0d2QoIkM6L1VzZXJzL0Nhcm9saW5lIFdhbmcvT25lRHJpdmUvRHVrZS9DcmltaW5hbCBSZWNpZGl2aXNtL2Jyb3dhcmQtZGF0YS1xdWVyeS9RdWVyaWVkIGRhdGEiKQ0KI3NvIHRoYXQgd3JpdGVUb1N5c3RlbSB3cml0ZXMgdG8gY29ycmVjdCBwbGFjZQ0KDQpwYiA8LSBwcm9ncmVzc19lc3RpbWF0ZWQobGVuZ3RoKHNhbXBsZSRjYXNlX251bWJlcikpDQoNCmFwaV9jYWxsPC1mdW5jdGlvbihzYW1wbGVfcm93LHJlcXVlc3Qpew0KICBwZXJzb24uaWQ8LXNhbXBsZV9yb3ckcGVyc29uX2lkWzFdDQogIGNhc2UubnVtYmVyPC1zYW1wbGVfcm93JGNhc2VfbnVtYmVyWzJdDQogIG9wdGlvbnMoZXJyb3I9cmVjb3ZlcikNCiAgcGIkdGljaygpJHByaW50KCkNCiAgU3lzLnNsZWVwKHNhbXBsZShzZXEoMC41LCAyLjUsIDAuNSksIDEpKSAjdGltZSBkZWxheSBiZXR3ZWVuIGNhbGxzDQoNCiAgZXZlbnRzZG9jczwtZ2V0SlNPTihjYXNlLm51bWJlciAscmVxdWVzdCkNCiAgZmlsZTwtd3JpdGVUb1N5c3RlbShldmVudHNkb2NzLGNhc2UubnVtYmVyLCJldmVudHNkb2NzLnR4dCIpICNzYXZlcyBmaWxlIHRvIHN5c3RlbSB1c2luZyBjYXNlbnVtIGFuZCANCiNyZXF1ZXN0IHR5cGUgaW4gdGhlIG5hbWUNCiAganNvbl9mcm9tZmlsZTwtZnJvbUpTT04odHh0PWZpbGUpDQogICNhIGxpc3QgZGYgaHlicmlkDQogIGpzb25fZGY8LWpzb25fZnJvbWZpbGUlPiUNCiAgICAgICAgICAgICAgdXNlX3NlcmllcyhFdmVudExpc3QpJT4lICAjdGhlIG1hZ3JpdHRyIHZlcnNpb24gb2YgJCBvcGVyYXRvcg0KICAgICAgICAgICAgICBtdXRhdGUoY2FzZV9udW09Y2FzZS5udW1iZXIsIHBlcnNvbl9pZD1wZXJzb24uaWQpDQogIHJldHVybihqc29uX2RmKQ0KfQ0KDQpzYWZlX2FwaV9jYWxsPC1zYWZlbHkoYXBpX2NhbGwpDQpkZl9hc19saXN0PC1zYW1wbGUlPiUNCiAgICAgICAgICAgICAgc3BsaXQoc2VxKG5yb3coLikpKSU+JQ0KICAgICAgICAgICAgICBsYXBwbHkoYXMubGlzdCkNCg0KZXZlbnRzZG9jc19kZjwtbWFwX2RmcihkZl9hc19saXN0LCB+c2FmZV9hcGlfY2FsbCgueCwiZXZlbnRzX2FuZF9kb2N1bWVudHMiKSkNCiMsIC4kY2FzZV9udW1iZXIgPSAiY2FzZV9udW1iZXIiLC4kcGVyc29uX2lkID0gInBlcnNvbl9pZCINCmBgYA0KDQpgYGB7cn0NCiNXaGF0IHdvdWxkIGhhcHBlbiBpZiBpdCdzIHRvbyBiaWcgdG8gc3RvcmUgaW4gbXkgZW52aXJvbm1lbnQNCndyaXRlLmNzdihldmVudHNkb2NzX2RmLCJldmVudHNkb2NzX2RmLmNzdiIpDQoNCmBgYA0KDQoNCg0KKnRoaXMgZnVuY3Rpb24gcmV0dXJucyBhIGpzb24gc3RyaW5nIGZyb20gdGhlIEJyb3dhcmQgQ2xlcmsncyB3ZWJzaXRlICoNCmlkZWE6IGNyZWF0ZSBBUEkgd3JhcHBlcg0KKioqTXVzdCBsb2cgaW4gYmVmb3JlIHJ1bm5pbmcgY29kZSoqKg0KYGBge3J9DQpnZXRKU09OPC1mdW5jdGlvbihjYXNlbnVtYmVyLHJlcXVlc3RfdHlwZSl7DQogIHVybF9icm93YXJkPC0iaHR0cHM6Ly9hcGkuYnJvd2FyZGNsZXJrLm9yZy9hcGkvIg0KICBrZXk8LSJMbzVNdDZFRUpJd0RJTHZwdXNJdHl2RG50THNMcU13dU1HenJ2TEZEc0t6RHNueXBxdUkzSkQ2Q0xLb29wTHh3dm55cHR0Q0tFcUduR3M2c0Y5RUtGbnIyMXFENE1KRm52RXdvdkR3cXRwNzNuekN0eUVHekpyc3k4SzRyc0Q5dEZFR3ZLcDhwc3BFeXhyR3cwb3h0RUYySEZvRDFLckhHR0V4dHRESEpDRjJ5ejF6b0R1RHhucHhudXdzSm84cks3SDFHc3BHR0l4eEZ6dERMdXREeXFIR0RydkYzc0hKc3l4d3pMQ3dESm5NQ25NdzNDTXNIdnpyTEVLIg0KDQogIGV2ZW50c2RvY3M8LVJFVFJZKCJHRVQiLCB1cmw9cGFzdGUwKHVybF9icm93YXJkLCdjYXNlLycsY2FzZW51bWJlciwnLycscmVxdWVzdF90eXBlLCcuanNvbj9hdXRoX2tleT0nLGtleSksdGltZXM9NSkNCiAgICAjcmV0cmllcyB1bnRpbCBodHRwX2Vycm9yIChib29sZWFuKSByZXR1cm5zIGZhbHNlOyB0cnVlIGlmIHN0YXR1cyBjb2RlIGlzIDQwMCsNCiAgICAjcmV0cmllcyBtYXggb2YgNXg7IDEgc2VjIHBhdXNlcyBiZXR3ZWVuIHRyaWVzDQogIHJldHVybihldmVudHNkb2NzKSAjciBhdXRvbWF0aWNhbGx5IHJldHVybnMgbGFzdCBsaW5lIGJ1dCB3ZSdsbCBleHBsaWNpdGx5IHJldHVybiB0aGlzIGhlcmUNCn0NCg0KYGBgDQoNCnRha2VzIGEganNvbiBIVFRQIHJlc3BvbnNlIGFuZCBzYXZlcyBpdCBhcyAudHh0IGZpbGUgDQphICJ2b2lkIiBmdW5jdGlvbg0KYGBge3J9DQoNCndyaXRlVG9TeXN0ZW08LWZ1bmN0aW9uKGpzb25fcmVzcG9uc2UsY2FzZW51bWJlciwgZmlsZXR5cGUpew0KICBmaWxlbmFtZT1wYXN0ZShjYXNlbnVtYmVyLGZpbGV0eXBlLCBzZXA9IiIpDQogIHJhdzwtY29udGVudChqc29uX3Jlc3BvbnNlLCJyYXciKQ0KIyAgaW52aXNpYmxlKHdyaXRlQmluKHJhdywgZmlsZW5hbWUpKQ0KICB3cml0ZUJpbihyYXcsZmlsZW5hbWUpDQogIHJldHVybihmaWxlbmFtZSkNCn0NCmBgYA0KDQpUZXN0aW5nIG1vbmdvDQpgYGB7cn0NCm0gPC0gbW9uZ28oImRpYW1vbmRzIikNCm0kaW5zZXJ0KGdncGxvdDI6OmRpYW1vbmRzKQ0KYGBgDQoNClRlc3QgY2FsbCB0byBhcGkNCmBgYHtyfQ0KY2FzZW51bTwtIjE2MDAwMzMzQ0YxMEEiDQpyZXF1ZXN0PSJldmVudHNfYW5kX2RvY3VtZW50cyINCmV2ZW50c2RvY3M8LWdldEpTT04oY2FzZW51bSxyZXF1ZXN0KQ0Kd3JpdGVUb1N5c3RlbShldmVudHNkb2NzLGNhc2VudW0sImV2ZW50c2RvY3MudHh0IikNCnRlc3RkZjwtYXBpX2NhbGwoY2FzZW51bSxyZXF1ZXN0KQ0KYGBgDQoNClRlc3QgbWFwX2Rmcg0KYGBge3J9DQojdGFrZXMgbXBnIGFzIGlucHV0IGFuZCByZXR1cm5zIGEgZGYNCnRlc3RpcmlzPC1zZWxlY3QoaGVhZChpcmlzKSxTZXBhbC5MZW5ndGgsIFNlcGFsLldpZHRoKQ0Kc2VsZjwtZnVuY3Rpb24odGVzdGxpc3Qpew0KICBwcmludCgiZW50ZXJlZCBmdW5jdGlvbiIpDQogIG1wZzwtdGVzdGxpc3RbMV0kbXBnDQogIHByaW50KG1wZykNCiAgY3lsPC10ZXN0bGlzdFsyXSRjeWwNCiAgcmVzdWx0PC10ZXN0aXJpcyU+JQ0KICAgICAgICAgICAgIG11bHRpcGx5X2J5KG1wZyklPiUNCiAgICAgICAgICAgICBtdXRhdGUobXVsdGJ5bXBnPW1wZyxuYW1lPWN5bCkNCiAgcmV0dXJuIChyZXN1bHQpDQp9DQojdGVzdGxpc3Q9YXMubGlzdChtdGNhcnMpDQp0ZXN0bGlzdDwtbXRjYXJzJT4lDQogICAgICAgICAgICAgIGhlYWQoKSU+JQ0KICAgICAgICAgICAgICBzcGxpdChzZXEobnJvdyguKSkpDQojdGVzdGxpc3QgPC0gc3BsaXQobXRjYXJzLCBzZXEobnJvdyhtdGNhcnMpKSkNCg0KdGVzdGNhcnM8LW1hcF9kZnIodGVzdGxpc3QsfnNlbGYoLngpKSAjZmluZGluZzogbWFwZGZyIHRha2VzIGEgbGlzdCBhcyBpbnB1dCwgb3IgY29lcmNlcyBkZiBjb3VtbnMgdG8gbGlzdA0KI3Nob3VsZCByZXR1cm4gZGYgd2l0aCB0aGUgbXBnKnRlc3RpcmlzDQojRXhwZWN0ZWQgbGVuZ3RoOiBpcmlzIGxlbmd0aCAqIG10Y2FycyBsZW5ndGg7IDYqMzI9MTkyDQpgYGANCg0KDQpUZXN0IHByb2Nlc3Npbmcgd2l0aCBqc29ubGl0ZQ0KRmluZGluZ3M6IGpzb25fZnJvbWZpbGUgaXMgdGhlIHNhbWUgYXMganNvbl9mcm9tdXJsDQpFaXRoZXIgd2F5IGkgZG8gaXQsIHNob3VsZCBwcm9iYWJseSBkbyB0aGUgaHR0cCByZXF1ZXN0IGp1c3Qgc28gSSBjYW4gY2hlY2sgc3RhdHVzDQpgYGB7cn0NCiN0ZXN0IHdpdGggcmVhZGluZyBmcm9tIGZpbGUNCmpzb25fZnJvbWZpbGU8LWZyb21KU09OKHR4dD1maWxlbmFtZSkNCiNhIGxpc3QgZGZoeWJyaWQNCmpzb25fZGY8LWpzb25fZnJvbWZpbGUkRXZlbnRMaXN0ICNhIGRhdGFmcmFtZQ0KbmFtZXMoanNvbl9kZiRQYXJ0eUxpc3RbMV0pDQoNCiMgI3Rlc3Qgd2l0aCByZWFkaW5nIGZyb20gdXJsDQojIHJlcXVlc3RfdHlwZT0iZXZlbnRzX2FuZF9kb2N1bWVudHMiDQojIGNhc2VudW1iZXI8LSIxNjAwMDMzM0NGMTBBIg0KIyBqc29uX2Zyb211cmw8LWZyb21KU09OKHR4dD1wYXN0ZTAodXJsX2Jyb3dhcmQsJ2Nhc2UvJyxjYXNlbnVtYmVyLCcvJyxyZXF1ZXN0X3R5cGUsJy5qc29uP2F1dGhfa2V5PScsa2V5KSkNCiNqdXN0IG5lZWQgdGhlIGRlc2NyaXB0aW9uIG9mIGVhY2ggZXZlbnQsIGRvbid0IG5lZWQgYW55dGhpbmcgZWxzZQ0KI2Zyb20gY29tbWFuZCBwcmludChldmVudGxpc3QkRXZlbnRMaXN0KTogZWFjaCBlbGVtZW50IG9mIGV2ZW50bGlzdCRFdmVudExpc3QgaGFzICRFdmVudERhdGUsICREZXNjcmlwdGlvbiwgJEV2ZW50QW1vdW50LCAkQWRkaXRpb25hbFRleHQsICRQYXJ0eUxpc3QsICRQYXJ0eTJMaXN0LCAkQ2F1c2VMaXN0LCANCiMkRXZlbnREb2N1bWVudExpc3QsICRFdmVudERvY3VtZW50TGlzdCROYW1lLCAkRXZlbnREb2N1bWVudExpc3QkUGFnZSwgJGV2ZW50RG9jdW1lbnQkQ29uZmlkZW50aWFsDQoNCmBgYA0KDQoNCg0KDQoNCg0KDQoNCg0K</div>
 
 
 
