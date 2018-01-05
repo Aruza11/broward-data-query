@@ -1,10 +1,11 @@
-Now to add the column info (casenumbers, person_ids)
-development test code with mtcars: 
-
+data import testing code (Thursday, 1/4/18)
+Test map_dfr
+```{r}
 #takes mpg as input and returns a df
 testiris<-select(head(iris),Sepal.Length, Sepal.Width)
 self<-function(testlist){
   print("entered function")
+
   mpg<-testlist[1]$mpg
   print(mpg)
   cyl<-testlist[2]$cyl
@@ -22,80 +23,62 @@ testlist<-mtcars%>%
 testcars<-map_dfr(testlist,~self(.x)) #finding: mapdfr takes a list as input, or coerces df coumns to list
 #should return df with the mpg*testiris
 #Expected length: iris length * mtcars length; 6*32=192
-
-_________________________________
-Attempted changing syntax based off of testing mtcars. Discovered map_dfr loops over a LIST, or the columns of a dfr 
-and returns row bound dfs 
-
-#takes mpg as input and returns a df
+```
+Test map_dfr with df_as_list
+```{r}
 testiris<-select(head(iris),Sepal.Length, Sepal.Width)
-
-
-self<-function(mpg){
-  print (mpg)
-  result<-mpg*testiris
-#  print(result)
+self<-function(sample_row){
+  person.id<-sample_row$person_id
+  case.number<-sample_row$case_number
+  
+#  print("entered function")
+  result<-testiris%>%
+             multiply_by(5)%>%
+             mutate(persid=person.id,casenum=case.number)
   return (result)
 }
 
-testlist=as.list(mtcars$mpg)
-testcars<-map_dfr(testlist,~self(.x)) #finding: mapdfr takes a list as input, or coerces df coumns to list
+safe_self<-safely(self)
 
-
-_________________________________
-
-
-Removed safely wrapper from safe_api_call; 
-Error in .$case_number : $ operator is invalid for atomic vectors
-
-Enter a frame number, or 0 to exit   
-
-1: map_dfr(sample, ~safe_api_call(.$case_number, "events_and_documents"))
-function (.x, .f, ..., .id = NULL) 
-{
-  if (!is_installed("dplyr")) {
-    abort("`map_df()` requires dplyr")
+wrapper<-function(sample_row){
+#  person.id<-sample_row$person_id
+ # case.number<-sample_row$case_number
+ # print(sample_row)
+  res<-safe_self(sample_row)
+#  print(res$result)
+  if(is.null(res$result)){
+  #  print(person.id, case.number)
+    print("is null")
+    return()
   }
-  .f <- as_mapper(.f, ...)
- ** res <- map(.x, .f, ...)
-  dplyr::bind_rows(res, .id = .id)
+  print("passed")
+  return(res$result)
 }
 
-2: map(.x, .f, ...)
+testmap<-map_dfr(df_with_flaw, ~wrapper(.x))
 
-3: .f(.x[[i]], ...)     **problem lies in .f?
-function (.x, .f, ...) 
-{
-  .f <- as_mapper(.f, ...)
-  .Call(map_impl, environment(), ".x", ".f", "list")
-}
+#QUestion: how does map_dfr deal with 1 null? 
+Answer: deals well, returns anyways
+df_with_flaw<-df_as_list
+df_with_flaw$`1`$case_number=NULL
+sample_row<-df_as_list$`2`
+testresult<-safe_self(sample_row)
+```
 
-4: safe_api_call(.$case_number, "events_and_documents")
-5: #6: getJSON(casenumber, request)
-6: #5: RETRY("GET", url = paste0(url_broward, "case/", casenumber, "/", request_type, ".json?auth_key="
-7: handle_url(handle, url, ...)
-8: paste0(url_broward, "case/", casenumber, "/", request_type, ".json?auth_key=", key)
+Test processing with jsonlite
+Findings: json_fromfile is the same as json_fromurl
+Either way i do it, should probably do the http request just so I can check status
+```{r}
+#test with reading from file
+json_fromfile<-fromJSON(txt=filename)
+#a list dfhybrid
+json_df<-json_fromfile$EventList #a dataframe
+names(json_df$PartyList[1])
 
-
-
-__________________
-$person_id
-$person_id$result
-NULL
-
-$person_id$error
-<simpleError in .$case_number: $ operator is invalid for atomic vectors>
-
-
-$case_number
-$case_number$result
-NULL
-
-Class(res)=list, when it needs to be atomic vector
-
-$case_number$error
-<simpleError: $ operator is invalid for atomic vectors>
-
-function (..., .x = ..1, .y = ..2, . = ..1) 
-safe_api_call(.$case_number, "events_and_documents")
-<bytecode: 0x000000000a34d830>
+# #test with reading from url
+# request_type="events_and_documents"
+# casenumber<-"16000333CF10A"
+# json_fromurl<-fromJSON(txt=paste0(url_broward,'case/',casenumber,'/',request_type,'.json?auth_key=',key))
+#just need the description of each event, don't need anything else
+#from command print(eventlist$EventList): each element of eventlist$EventList has $EventDate, $Description, $EventAmount, $AdditionalText, $PartyList, $Party2List, $CauseList, 
+#$EventDocumentList, $EventDocumentList$Name, $EventDocumentList$Page, $eventDocument$Confidential

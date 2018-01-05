@@ -142,7 +142,7 @@ $(document).ready(function () {
 </style>
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("data import tutorial.Rmd");
+  window.initializeSourceEmbed("parse_df.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
@@ -174,105 +174,54 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <p>This is an <a href="http://rmarkdown.rstudio.com">R Markdown</a> Notebook. When you execute code within the notebook, the results appear beneath the code.</p>
 <p>Try executing this chunk by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Ctrl+Shift+Enter</em>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHBhY2thZ2VzXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmxpYnJhcnkobWFncml0dHIpXG5saWJyYXJ5KHN0cmluZ3IpXG5gYGAifQ== -->
+<pre class="r"><code># Load packages
+library(tidyverse)
+library(magrittr)
+library(stringr)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <p>Add a new chunk by clicking the <em>Insert Chunk</em> button on the toolbar or by pressing <em>Ctrl+Alt+I</em>.</p>
 <p>When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the <em>Preview</em> button or press <em>Ctrl+Shift+K</em> to preview the HTML file).</p>
-<p>Currently following tutorial</p>
+<p>Purpose: to determine</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHBhY2thZ2VzXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmBgYCJ9 -->
-<pre class="r"><code># Load packages
-library(tidyverse)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSCRdGlkeXZlcnNlkiB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDMuNC4zLS0gQXR0YWNoaW5nIHBhY2thZ2VzIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIHRpZHl2ZXJzZSAxLjIuMSAtLVxudiBnZ3Bsb3QyIDIuMi4xICAgICB2IHB1cnJyICAgMC4yLjRcbnYgdGliYmxlICAxLjMuNCAgICAgdiBkcGx5ciAgIDAuNy40XG52IHRpZHlyICAgMC43LjIgICAgIHYgc3RyaW5nciAxLjIuMFxudiByZWFkciAgIDEuMS4xICAgICB2IGZvcmNhdHMgMC4yLjBcbnBhY2thZ2UgkWdncGxvdDKSIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy40LjJwYWNrYWdlIJF0aWJibGWSIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy40LjJwYWNrYWdlIJF0aWR5cpIgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiAzLjQuM3BhY2thZ2UgkXJlYWRykiB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDMuNC4ycGFja2FnZSCRcHVycnKSIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy40LjNwYWNrYWdlIJFkcGx5cpIgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiAzLjQuMnBhY2thZ2UgkWZvcmNhdHOSIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy40LjMtLSBDb25mbGljdHMgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gdGlkeXZlcnNlX2NvbmZsaWN0cygpIC0tXG54IGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbnggZHBseXI6OmxhZygpICAgIG1hc2tzIHN0YXRzOjpsYWcoKVxuIn0= -->
-<pre><code>package 㤼㸱tidyverse㤼㸲 was built under R version 3.4.3-- Attaching packages ----------------------------------------------------------------------- tidyverse 1.2.1 --
-v ggplot2 2.2.1     v purrr   0.2.4
-v tibble  1.3.4     v dplyr   0.7.4
-v tidyr   0.7.2     v stringr 1.2.0
-v readr   1.1.1     v forcats 0.2.0
-package 㤼㸱ggplot2㤼㸲 was built under R version 3.4.2package 㤼㸱tibble㤼㸲 was built under R version 3.4.2package 㤼㸱tidyr㤼㸲 was built under R version 3.4.3package 㤼㸱readr㤼㸲 was built under R version 3.4.2package 㤼㸱purrr㤼㸲 was built under R version 3.4.3package 㤼㸱dplyr㤼㸲 was built under R version 3.4.2package 㤼㸱forcats㤼㸲 was built under R version 3.4.3-- Conflicts -------------------------------------------------------------------------- tidyverse_conflicts() --
-x dplyr::filter() masks stats::filter()
-x dplyr::lag()    masks stats::lag()</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShodHRyKVxuYGBgIn0= -->
-<pre class="r"><code>library(httr)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSDjpLzjuLFodHRy46S847iyIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gMy40LjNcbiJ9 -->
-<pre><code>package 㤼㸱httr㤼㸲 was built under R version 3.4.3</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShqc29ubGl0ZSlcbmBgYCJ9 -->
-<pre class="r"><code>library(jsonlite)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoicGFja2FnZSDjpLzjuLFqc29ubGl0ZeOkvOO4siB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDMuNC4zXG5BdHRhY2hpbmcgcGFja2FnZTog46S847ixanNvbmxpdGXjpLzjuLJcblxuVGhlIGZvbGxvd2luZyBvYmplY3QgaXMgbWFza2VkIGZyb20g46S847ixcGFja2FnZTpwdXJycuOkvOO4sjpcblxuICAgIGZsYXR0ZW5cbiJ9 -->
-<pre><code>package 㤼㸱jsonlite㤼㸲 was built under R version 3.4.3
-Attaching package: 㤼㸱jsonlite㤼㸲
-
-The following object is masked from 㤼㸱package:purrr㤼㸲:
-
-    flatten</code></pre>
-<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6NywibnJvdyI6MTJ9LCJyZGYiOiJINHNJQUFBQUFBQUFCcDFWWFcvVE1CUk5QN2JTTXI0MEpDVEVnNUVtQVErcm5SYldGc0ZFYVZZMk5OZ0VsZGdiTXNudE1DVE81TGlGU2p6d3k0SHIxSWFtR3hLbGtodjMrUHJlNDVOejNUZkJTYXR4MHZBOHIreFZxaVd2WE1GcHRZeGZKYS9xMWMzenErZFZObkZTdzNFRngwYSthRGJnZ29uR3NZWmozY1pjd21FMm1xU1hiZnppdmhWRzVYLzJsWmNPc0I3REZPSU1aOWZ6MVRsNmhmVll0OTNwZFVZSGJkWmZBSHZkYnJzMU9tZ2hXTXl6RnNZOGMybCtKeC96VUtjS1p6OFc2RllYUnNWS1ZiTFMxS3hVNjFhMityeE0rYWZOWExlWkc2eE5XWSsybU04V2tGYXJpRHlrckx1TXRGZ1I2VkgvRVNLc3Q0aDB6aUhkQXVKakVyK0krRFJQamtqT3VQTHpuN1J3RnFsWkRScFdEMmNUWngxcmxZSVdHemJ6blVFNlVab0VNQVpGMjR3RWZKYVJZNTRoTkFFYmN6UFlJVWNxQWtXR1hNUmtsR0xBeks1dDRObzdvVDlHaW4rUkZ0dkViQnBqUkVRT3VRWXlCTWpzMHQyaGlDR3ZKalB6VExpTXlEQlZKQkJabUU1QnViejNDb0h2bE5BYUpEbU9nWk9qTVhtZGF2SmlJbUx0d21rZWZnZ1lwUXhCdzREU3ZWaWNpZys0WUNxOEFTRXpqWHdTa05wdDIxZW5aQi9paUI0cjBFcndtQXhTT2FhdnVKQWFCM25kZk5Fa0IzS3NVSDh5Y050dXYrd1AzcEtoVUNqVFNDUnducytkT1pWdEZNcVV3K0loaUNuTUJiRXhyRUNYMGxjVFREZElrN040UnA3UEtPMVBVVzF1NkIrZGFaRktwK0hWWXVCS2xsbnhsaWhZNW5lM2JyRW1ZeXVWclM1MHBYTm95YnEwOGgyL3pEQk9uajh2N05xN2hKQmdMK2lQOXA2UytRZXRLL1g5N01Iako5OFk4Ny90T2dwYnJiWWhPUDkxNDltelR6ejhEQnB0cmZDdFFtUVhkcGUzazVVKzdsN2IzM21Fbjg3RGp0L3V1cHFWUXpxMjAxdkZsMFd3K1gyOFdWenJkOUVZOXlLeXRjTVlwZVE1K2cvSjR3eWJqeHdrQ1VRQy9STFBHdWU0T2xIZWdzN2RQVExtM2QyOUlQQWYzbFB4TXBZOEFYY1oxOXhmMVltZDFNOUFaYWw4TDV5TWwwS2V3WHM1U1Z6QTNoUU5IL3l4K2VVQXNsQ0ozTUlPeW1QNmllSHFUTjJQSW1GQ2VEeUNyM3FKVTEybFg1cU9sekZWMlJwbTR5L0hhMFJjOHlhMmJRSVhITEdXMm9ieXlwdldsWXViUzJvSnVEYVJwbmkwSFg2Y3lNL2J2cjFyUzNNT09hR1M5K2Z2dUpRTGw1ZXNPbUpyVG5lUXAwSTZiZGF3dnlGMkV1QWg4ek0yejR4UjNVa1F6Wm82MWR6Rk5jSTBka2grTnUvSEwwVDlqc1pzQ0FBQSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["X"],"name":[1],"type":["int"],"align":["right"]},{"label":["person_id"],"name":[2],"type":["int"],"align":["right"]},{"label":["case_num"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["EventDate"],"name":[4],"type":["fctr"],"align":["left"]},{"label":["Description"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["EventAmount"],"name":[6],"type":["fctr"],"align":["left"]},{"label":["AdditionalText"],"name":[7],"type":["fctr"],"align":["left"]}],"data":[{"1":"1","2":"1","3":"09083797TI30A","4":"04/20/2010","5":"D6 Withdrawn","6":"$0.00","7":"Count(s):<|001|>"},{"1":"2","2":"1","3":"09083797TI30A","4":"04/20/2010","5":"Deft Paid Late Fees","6":"$0.00","7":"L/f"},{"1":"3","2":"1","3":"09083797TI30A","4":"04/20/2010","5":"File Letter To Deft//Eligible For Reinstatement","6":"$0.00","7":"H655557471380"},{"1":"4","2":"1","3":"09083797TI30A","4":"04/08/2010","5":"Court Defer/30 Days Past Due","6":"$0.00","7":"$23.00"},{"1":"5","2":"1","3":"09083797TI30A","4":"03/22/2010","5":"Letter-Payment Received Late","6":"$0.00","7":"Rec'd $600// Bal $23// Due Immediately\\nCount(s):<|001|>"},{"1":"6","2":"1","3":"09083797TI30A","4":"03/09/2010","5":"D6 Order Fail To Pay","6":"$0.00","7":"DEDATE=       Count(s):<|001|>"},{"1":"7","2":"1","3":"09083797TI30A","4":"10/21/2009","5":"Hrg Held/Pretrial Conf/Maintain N.G. Infract Ct","6":"$0.00","7":"Set For Trial>>\\nCount(s):<|001|>"},{"1":"8","2":"1","3":"09083797TI30A","4":"09/18/2009","5":"JACS First Time Not Guilty","6":"$0.00","7":"@@jackets Printed"},{"1":"9","2":"1","3":"09083797TI30A","4":"09/17/2009","5":"File Defense Demand For Discovery","6":"$0.00","7":"NA"},{"1":"10","2":"1","3":"09083797TI30A","4":"09/17/2009","5":"File Defense Written Plea Of Not Guilty","6":"$0.00","7":"NA"},{"1":"11","2":"1","3":"09083797TI30A","4":"09/15/2009","5":"Letter To Def//Must Comply By//Available Options","6":"$0.00","7":"Must Comply By 10/14/09"},{"1":"12","2":"1","3":"09098832TI20A","4":"11/04/2009","5":"Must Comply By","6":"$0.00","7":"NA"}],"options":{"columns":{"min":{},"max":[10],"total":[7]},"rows":{"min":[10],"max":[10],"total":[12]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>idea: use group by person id, group by case number, call function</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1NhdmUgdXNlcm5hbWUgYXMgdmFyaWFibGUgXG51c2VybmFtZTwtICd0Y2xhdmVsbGUnXG4jU2F2ZSBiYXNlIGVucG9pbnQgYXMgdmFyXG51cmxfZ2l0PC0naHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS8nXG4jQ29uc3RydWN0IEFQSSByZXF1ZXN0XG5yZXBvczwtR0VUKHVybD1wYXN0ZTAodXJsX2dpdCwndXNlcnMvJyx1c2VybmFtZSwnL3JlcG9zJykpXG5gYGAifQ== -->
-<pre class="r"><code>#Save username as variable 
-username&lt;- 'tclavelle'
-#Save base enpoint as var
-url_git&lt;-'https://api.github.com/'
-#Construct API request
-repos&lt;-GET(url=paste0(url_git,'users/',username,'/repos'))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Status code quick ref: 1XX - Informational 2XX - Success! 3XX - Client Error (something’s not right on your end) 4XX - Server Error (something’s not right on their end)</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1Byb2Nlc3MgQVBJIHJlcXVlc3QgY29udGVudFxucmVwb19jb250ZW50PWNvbnRlbnQocmVwb3MpXG5gYGAifQ== -->
-<pre class="r"><code>#Process API request content
-repo_content=content(repos)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmFpbF90b19hcHBlYXI8LWV2ZW50c2Rlc2NycF9kZiU+JVxuICAgICAgICAgICAgICAgICAgbXV0YXRlKGZhaWxfYXBwZWFyZWQ9aWZfZWxzZShzdHJfZGV0ZWN0KERlc2NyaXB0aW9uLGNvbGwoXCJXaXRoZHJhd25cIixULGlnbm9yZV9jYXNlPVQpKVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA9PVQsMSwwKSkgJT4lXG4gICAgICAgICAgICAgICAgICBzZWxlY3QocGVyc29uX2lkLEV2ZW50RGF0ZSxjYXNlX251bSxmYWlsX2FwcGVhcmVkKVxuVmlldyhmYWlsX3RvX2FwcGVhcilcbiNzdHJpbmc8LWV2ZW50c2Rlc2NycF9kZiREZXNjcmlwdGlvblsxXVxuI2lmX2Vsc2Uoc3RyX2RldGVjdChzdHJpbmcsY29sbChcIldpdGhkcmF3blwiLFQsaWdub3JlX2Nhc2U9VCkpPT1ULDEsMClcbmBgYCJ9 -->
+<pre class="r"><code>fail_to_appear&lt;-eventsdescrp_df%&gt;%
+                  mutate(fail_appeared=if_else(str_detect(Description,coll(&quot;Withdrawn&quot;,T,ignore_case=T))
+                                               ==T,1,0)) %&gt;%
+                  select(person_id,EventDate,case_num,fail_appeared)
+View(fail_to_appear)
+#string&lt;-eventsdescrp_df$Description[1]
+#if_else(str_detect(string,coll(&quot;Withdrawn&quot;,T,ignore_case=T))==T,1,0)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0FwcGx5IGZ1bmN0aW9uIGFjcm9zcyBhbGwgbGlzdCBlbGVtZW50cyB0byBleHRyYWN0IG5hbWUvYWRkcmVzcyBvZiBlYWNoIHJlcG8gXG5yZXBvX2RmPC1sYXBwbHkocmVwb19jb250ZW50LGZ1bmN0aW9uKHgpe1xuICBkZjwtZGF0YV9mcmFtZShyZXBvICAgICA9IHgkbmFtZSxcbiAgICAgICAgICAgICAgICAgYWRkcmVzcyAgPXgkaHRtbF91cmwsXG4gICAgICAgICAgICAgICAgIGNvbW1pdHMgID14JGdpdF9jb21taXRzX3VybClcbn0pICU+JSBiaW5kX3Jvd3MoKVxuYGBgIn0= -->
-<pre class="r"><code>#Apply function across all list elements to extract name/address of each repo 
-repo_df&lt;-lapply(repo_content,function(x){
-  df&lt;-data_frame(repo     = x$name,
-                 address  =x$html_url,
-                 commits  =x$git_commits_url)
-}) %&gt;% bind_rows()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>repo_content list has a lot of useful information. For each repo, most of list elements are additional API endpoint urls (tell us where we can request additional data on given repo)</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI3JlcG8gdXJsXG51cmxfcmVwbzwtcmVwb19kZiRjb21taXRzW3JlcG9fZGYkcmVwbz09J3NmZy1hcXVhJ11cbiNjbGVhbiB0aGUgdXJsXG51cmxfcmVwbzwtZ3N1Yih1cmxfcmVwbyxwYXR0ZXJuPSdnaXQvY29tbWl0c3svc2hhfScscmVwbGFjZW1lbnQ9J2NvbW1pdHMnLGZpeGVkPVRSVUUpXG4jQVBJIHJlcXVlc3RcbmNvbW1pdHM8LUdFVCh1cmw9dXJsX3JlcG8pXG5gYGAifQ== -->
-<pre class="r"><code>#repo url
-url_repo&lt;-repo_df$commits[repo_df$repo=='sfg-aqua']
-#clean the url
-url_repo&lt;-gsub(url_repo,pattern='git/commits{/sha}',replacement='commits',fixed=TRUE)
-#API request
-commits&lt;-GET(url=url_repo)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0dldCBjb250ZW50OiBcbmNvbW1pdHNfY29udGVudDwtY29udGVudChjb21taXRzKVxuYGBgIn0= -->
-<pre class="r"><code>#Get content: 
-commits_content&lt;-content(commits)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI3dyaXRlLmNzdihmYWlsX3RvX2FwcGVhcixcImZhaWxfdG9fYXBwZWFyLmNzdlwiKVxuYGBgIn0= -->
+<pre class="r"><code>#write.csv(fail_to_appear,&quot;fail_to_appear.csv&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiANCg0KQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkN0cmwrQWx0K0kqLg0KDQpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkN0cmwrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4NCg0KQ3VycmVudGx5IGZvbGxvd2luZyB0dXRvcmlhbA0KYGBge3J9DQojIExvYWQgcGFja2FnZXMNCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShodHRyKQ0KbGlicmFyeShqc29ubGl0ZSkNCg0KYGBgDQoNCmBgYHtyfQ0KI1NhdmUgdXNlcm5hbWUgYXMgdmFyaWFibGUgDQp1c2VybmFtZTwtICd0Y2xhdmVsbGUnDQoNCiNTYXZlIGJhc2UgZW5wb2ludCBhcyB2YXINCnVybF9naXQ8LSdodHRwczovL2FwaS5naXRodWIuY29tLycNCg0KI0NvbnN0cnVjdCBBUEkgcmVxdWVzdA0KcmVwb3M8LUdFVCh1cmw9cGFzdGUwKHVybF9naXQsJ3VzZXJzLycsdXNlcm5hbWUsJy9yZXBvcycpKQ0KYGBgDQoNClN0YXR1cyBjb2RlIHF1aWNrIHJlZjogDQoxWFggLSBJbmZvcm1hdGlvbmFsDQoyWFggLSBTdWNjZXNzIQ0KM1hYIC0gQ2xpZW50IEVycm9yIChzb21ldGhpbmfigJlzIG5vdCByaWdodCBvbiB5b3VyIGVuZCkNCjRYWCAtIFNlcnZlciBFcnJvciAoc29tZXRoaW5n4oCZcyBub3QgcmlnaHQgb24gdGhlaXIgZW5kKQ0KDQoNCmBgYHtyfQ0KI1Byb2Nlc3MgQVBJIHJlcXVlc3QgY29udGVudA0KcmVwb19jb250ZW50PWNvbnRlbnQocmVwb3MpDQpgYGANCg0KDQpgYGB7cn0NCiNBcHBseSBmdW5jdGlvbiBhY3Jvc3MgYWxsIGxpc3QgZWxlbWVudHMgdG8gZXh0cmFjdCBuYW1lL2FkZHJlc3Mgb2YgZWFjaCByZXBvIA0KDQpyZXBvX2RmPC1sYXBwbHkocmVwb19jb250ZW50LGZ1bmN0aW9uKHgpew0KICBkZjwtZGF0YV9mcmFtZShyZXBvICAgICA9IHgkbmFtZSwNCiAgICAgICAgICAgICAgICAgYWRkcmVzcyAgPXgkaHRtbF91cmwsDQogICAgICAgICAgICAgICAgIGNvbW1pdHMgID14JGdpdF9jb21taXRzX3VybCkNCn0pICU+JSBiaW5kX3Jvd3MoKQ0KYGBgDQoNCmBgYHtyfQ0KVmlldyhyZXBvX2RmKQ0KYGBgDQoNCnJlcG9fY29udGVudCBsaXN0IGhhcyBhIGxvdCBvZiB1c2VmdWwgaW5mb3JtYXRpb24uIA0KRm9yIGVhY2ggcmVwbywgbW9zdCBvZiBsaXN0IGVsZW1lbnRzIGFyZSBhZGRpdGlvbmFsIEFQSSBlbmRwb2ludCB1cmxzICh0ZWxsIHVzIHdoZXJlIHdlIGNhbiByZXF1ZXN0IGFkZGl0aW9uYWwgZGF0YSBvbiBnaXZlbiByZXBvKQ0KDQpgYGB7cn0NCiNyZXBvIHVybA0KdXJsX3JlcG88LXJlcG9fZGYkY29tbWl0c1tyZXBvX2RmJHJlcG89PSdzZmctYXF1YSddDQoNCiNjbGVhbiB0aGUgdXJsDQp1cmxfcmVwbzwtZ3N1Yih1cmxfcmVwbyxwYXR0ZXJuPSdnaXQvY29tbWl0c3svc2hhfScscmVwbGFjZW1lbnQ9J2NvbW1pdHMnLGZpeGVkPVRSVUUpDQoNCiNBUEkgcmVxdWVzdA0KY29tbWl0czwtR0VUKHVybD11cmxfcmVwbykNCg0KYGBgDQoNCmBgYHtyfQ0KI0dldCBjb250ZW50OiANCiNjb21taXRzX2NvbnRlbnQ8LWNvbnRlbnQoY29tbWl0cykNCiNiZXR0ZXIgbWV0aG9kIGJlbG93OiANCmNvbW1pdHNfZGY8LWZyb21KU09OKHR4dD11cmxfcmVwbykNCmBgYA0KDQoNCg0KDQoNCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpUaGlzIGlzIGFuIFtSIE1hcmtkb3duXShodHRwOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tKSBOb3RlYm9vay4gV2hlbiB5b3UgZXhlY3V0ZSBjb2RlIHdpdGhpbiB0aGUgbm90ZWJvb2ssIHRoZSByZXN1bHRzIGFwcGVhciBiZW5lYXRoIHRoZSBjb2RlLiANCg0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiANCg0KYGBge3J9DQojIExvYWQgcGFja2FnZXMNCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShtYWdyaXR0cikNCmxpYnJhcnkoc3RyaW5ncikNCmBgYA0KDQpBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVzc2luZyAqQ3RybCtBbHQrSSouDQoNCldoZW4geW91IHNhdmUgdGhlIG5vdGVib29rLCBhbiBIVE1MIGZpbGUgY29udGFpbmluZyB0aGUgY29kZSBhbmQgb3V0cHV0IHdpbGwgYmUgc2F2ZWQgYWxvbmdzaWRlIGl0IChjbGljayB0aGUgKlByZXZpZXcqIGJ1dHRvbiBvciBwcmVzcyAqQ3RybCtTaGlmdCtLKiB0byBwcmV2aWV3IHRoZSBIVE1MIGZpbGUpLg0KDQpQdXJwb3NlOiB0byBkZXRlcm1pbmUgDQpgYGB7cn0NCmV2ZW50c2Rlc2NycF9kZjwtcmVhZC5jc3YoInNhbXBsZV9ldmVudHNkZXNjcnBfZGYuY3N2IikNCmV2ZW50c2Rlc2NycF9kZiREZXNjcmlwdGlvbjwtYXMuY2hhcmFjdGVyKGV2ZW50c2Rlc2NycF9kZiREZXNjcmlwdGlvbikNCmBgYA0KDQppZGVhOiB1c2UgZ3JvdXAgYnkgcGVyc29uIGlkLCBncm91cCBieSBjYXNlIG51bWJlciwgY2FsbCBmdW5jdGlvbiANCmBgYHtyfQ0KZmFpbF90b19hcHBlYXI8LWV2ZW50c2Rlc2NycF9kZiU+JQ0KICAgICAgICAgICAgICAgICAgbXV0YXRlKGZhaWxfYXBwZWFyZWQ9aWZfZWxzZShzdHJfZGV0ZWN0KERlc2NyaXB0aW9uLGNvbGwoIldpdGhkcmF3biIsVCxpZ25vcmVfY2FzZT1UKSkNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPT1ULDEsMCkpICU+JQ0KICAgICAgICAgICAgICAgICAgc2VsZWN0KHBlcnNvbl9pZCxFdmVudERhdGUsY2FzZV9udW0sZmFpbF9hcHBlYXJlZCkNClZpZXcoZmFpbF90b19hcHBlYXIpDQojc3RyaW5nPC1ldmVudHNkZXNjcnBfZGYkRGVzY3JpcHRpb25bMV0NCiNpZl9lbHNlKHN0cl9kZXRlY3Qoc3RyaW5nLGNvbGwoIldpdGhkcmF3biIsVCxpZ25vcmVfY2FzZT1UKSk9PVQsMSwwKQ0KYGBgDQoNCg0KYGBge3J9DQojd3JpdGUuY3N2KGZhaWxfdG9fYXBwZWFyLCJmYWlsX3RvX2FwcGVhci5jc3YiKQ0KYGBgDQoNCg==</div>
 
 
 

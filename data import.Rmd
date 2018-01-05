@@ -13,7 +13,6 @@ library(tidyverse)
 library(httr)
 library(jsonlite)
 library(magrittr)
-#library(mongolite)
 ```
 
 ```{r}
@@ -31,12 +30,11 @@ df_as_list<-sample%>%
 ```
 
 
-running functions
+Querying data for events and documents (used for failure to appear)
 safe_api_call(casenumber, request_type) casenumber is a string
-PROBLEM: when safely is applied, map_dfr doesn't work
 PROBLEM: find case with lots of charges, see if 2nd page is generated 
 ```{r}
-setwd("C:/Users/Caroline Wang/OneDrive/Duke/Criminal Recidivism/broward-data-query/Queried data")
+setwd("C:/Users/Caroline Wang/OneDrive/Duke/Criminal Recidivism/broward-data-query/events_docs_data")
 #so that writeToSystem writes to correct place
 
 pb <- progress_estimated(length(sample$case_number))
@@ -83,7 +81,24 @@ eventsdocs_df<-map_dfr(df_as_list, ~wrapper(.x,"events_and_documents"))
 #What would happen if it's too big to store in my environment
 eventsdescrp_df<-select(eventsdocs_df, person_id,case_num,EventDate,Description,EventAmount,AdditionalText)
 write.csv(eventsdescrp_df,"sample_eventsdescrp_df.csv")
+#rm(eventsdescrp_df)
 
+```
+
+Querying data for dispositions (for convictions)
+```{r}
+setwd("C:/Users/Caroline Wang/OneDrive/Duke/Criminal Recidivism/broward-data-query/events_docs_data")
+#so that writeToSystem writes to correct place
+
+pb <- progress_estimated(length(sample$case_number))
+dispositions_df<-map_dfr(df_as_list, ~wrapper(.x,"crim_dispositions"))
+
+```
+
+```{r}
+eventsdescrp_df<-select(dispositions_df, person_id,case_num,EventDate)
+write.csv(dispositions_df,"sample_disp_df.csv")
+#rm(dispositions_df)
 ```
 
 
@@ -92,8 +107,9 @@ write.csv(eventsdescrp_df,"sample_eventsdescrp_df.csv")
 getJSON<-function(casenumber,request_type){
   url_broward<-"https://api.browardclerk.org/api/"
   key<-"Lo5Mt6EEJIwDILvpusItyvDntLsLqMwuMGzrvLFDsKzDsnypquI3JD6CLKoopLxwvnypttCKEqGnGs6sF9EKFnr21qD4MJFnvEwovDwqtp73nzCtyEGzJrsy8K4rsD9tFEGvKp8pspEyxrGw0oxtEF2HFoD1KrHGGExttDHJCF2yz1zoDuDxnpxnuwsJo8rK7H1GspGGIxxFztDLutDyqHGDrvF3sHJsyxwzLCwDJnMCnMw3CMsHvzrLEK"
-
-  eventsdocs<-RETRY("GET", url=paste0(url_broward,'case/',casenumber,'/',request_type,'.json?auth_key=',key),times=5)
+  url=paste0(url_broward,'case/',casenumber,'/',request_type,'.json?auth_key=',key)
+  print(url)
+  eventsdocs<-RETRY("GET", url,times=5)
     #retries until http_error (boolean) returns false; true if status code is 400+
     #retries max of 5x; 1 sec pauses between tries
   return(eventsdocs) #r automatically returns last line but we'll explicitly return this here
@@ -113,19 +129,17 @@ writeToSystem<-function(json_response,casenumber, filetype){
 }
 ```
 
-Testing mongo
-```{r}
-m <- mongo("diamonds")
-m$insert(ggplot2::diamonds)
-```
 
 Test call to api
 ```{r}
-casenum<-"16000333CF10A"
-request="events_and_documents"
-eventsdocs<-getJSON(casenum,request)
-writeToSystem(eventsdocs,casenum,"eventsdocs.txt")
-testdf<-api_call(casenum,request)
+pb <- progress_estimated(length(1))
+
+casenum<-"09083797TI30A"
+request="crim_dispositions"
+disp<-getJSON(casenum,request)
+#writeToSystem(eventsdocs,casenum,"eventsdocs.txt")
+row<-slice(sample,1:1)
+testdf<-api_call(row ,request)
 ```
 
 Test map_dfr
@@ -170,13 +184,8 @@ self<-function(sample_row){
 safe_self<-safely(self)
 
 wrapper<-function(sample_row){
-#  person.id<-sample_row$person_id
- # case.number<-sample_row$case_number
- # print(sample_row)
   res<-safe_self(sample_row)
-#  print(res$result)
   if(is.null(res$result)){
-  #  print(person.id, case.number)
     print("is null")
     return()
   }
@@ -195,7 +204,7 @@ testresult<-safe_self(sample_row)
 ```
 
 
-Test processing with jsonlite
+Test processing events_docs with jsonlite
 Findings: json_fromfile is the same as json_fromurl
 Either way i do it, should probably do the http request just so I can check status
 ```{r}
@@ -215,11 +224,12 @@ names(json_df$PartyList[1])
 
 ```
 
-
-
-
-
-
-
-
+Test processing crim_dispositions with jsonlite
+```{r}
+disp<-getJSON(casenum,request)
+filename=writeToSystem(disp,casenum,request)
+json_string<-fromJSON(txt=filename)
+json_df<-json_string$ChargeDispositionLists
+listelem<-as_data_frame(json_df$PleaList)
+```
 
