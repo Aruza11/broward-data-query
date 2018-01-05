@@ -23,25 +23,33 @@ loopdf<-select(loopdf, person_id, case_number)
 sample<-slice(loopdf,1:2)
 sample$case_number<-as.character(sample$case_number)
 sample$person_id<-as.numeric(sample$person_id)
+df_as_list<-sample%>%
+              split(seq(nrow(.)))%>%
+              lapply(as.vector)
+
 
 ```
 
 
 running functions
 safe_api_call(casenumber, request_type) casenumber is a string
+PROBLEM: when safely is applied, map_dfr doesn't work
+PROBLEM: find case with lots of charges, see if 2nd page is generated 
 ```{r}
 setwd("C:/Users/Caroline Wang/OneDrive/Duke/Criminal Recidivism/broward-data-query/Queried data")
 #so that writeToSystem writes to correct place
 
 pb <- progress_estimated(length(sample$case_number))
+#personid<-person.id<-df_as_list$'1'$person_id[1]
 
 api_call<-function(sample_row,request){
-  person.id<-sample_row$person_id[1]
-  case.number<-sample_row$case_number[2]
   options(error=recover)
   pb$tick()$print()
+  
   Sys.sleep(sample(seq(0.5, 2.5, 0.5), 1)) #time delay between calls
-
+  
+  person.id<-sample_row$person_id
+  case.number<-sample_row$case_number
   eventsdocs<-getJSON(case.number ,request)
   file<-writeToSystem(eventsdocs,case.number,"eventsdocs.txt") #saves file to system using casenum and 
 #request type in the name
@@ -54,25 +62,32 @@ api_call<-function(sample_row,request){
 }
 
 safe_api_call<-safely(api_call)
-df_as_list<-sample%>%
-              split(seq(nrow(.)))%>%
-              lapply(as.list)
 
-eventsdocs_df<-map_dfr(df_as_list, ~safe_api_call(.x,"events_and_documents"))
-#, .$case_number = "case_number",.$person_id = "person_id"
+wrapper<-function(sample_row,request){
+  options(error=recover)
+  res<-safe_api_call(sample_row,request)
+  if(is.null(res$result)){
+    return()
+  }
+  return(res$result)
+}
+
+eventsdocs_df<-map_dfr(df_as_list, ~wrapper(.x,"events_and_documents"))
+
+#sample_row<-df_as_list$`2`
+#testresult<-safe_api_call(sample_row,"events_and_documents")
+
 ```
 
 ```{r}
 #What would happen if it's too big to store in my environment
-write.csv(eventsdocs_df,"eventsdocs_df.csv")
+eventsdescrp_df<-select(eventsdocs_df, person_id,case_num,EventDate,Description,EventAmount,AdditionalText)
+write.csv(eventsdescrp_df,"sample_eventsdescrp_df.csv")
 
 ```
 
 
-
 *this function returns a json string from the Broward Clerk's website *
-idea: create API wrapper
-***Must log in before running code***
 ```{r}
 getJSON<-function(casenumber,request_type){
   url_broward<-"https://api.browardclerk.org/api/"
@@ -89,7 +104,6 @@ getJSON<-function(casenumber,request_type){
 takes a json HTTP response and saves it as .txt file 
 a "void" function
 ```{r}
-
 writeToSystem<-function(json_response,casenumber, filetype){
   filename=paste(casenumber,filetype, sep="")
   raw<-content(json_response,"raw")
@@ -120,6 +134,7 @@ Test map_dfr
 testiris<-select(head(iris),Sepal.Length, Sepal.Width)
 self<-function(testlist){
   print("entered function")
+
   mpg<-testlist[1]$mpg
   print(mpg)
   cyl<-testlist[2]$cyl
@@ -137,6 +152,46 @@ testlist<-mtcars%>%
 testcars<-map_dfr(testlist,~self(.x)) #finding: mapdfr takes a list as input, or coerces df coumns to list
 #should return df with the mpg*testiris
 #Expected length: iris length * mtcars length; 6*32=192
+```
+Test map_dfr with df_as_list
+```{r}
+testiris<-select(head(iris),Sepal.Length, Sepal.Width)
+self<-function(sample_row){
+  person.id<-sample_row$person_id
+  case.number<-sample_row$case_number
+  
+#  print("entered function")
+  result<-testiris%>%
+             multiply_by(5)%>%
+             mutate(persid=person.id,casenum=case.number)
+  return (result)
+}
+
+safe_self<-safely(self)
+
+wrapper<-function(sample_row){
+#  person.id<-sample_row$person_id
+ # case.number<-sample_row$case_number
+ # print(sample_row)
+  res<-safe_self(sample_row)
+#  print(res$result)
+  if(is.null(res$result)){
+  #  print(person.id, case.number)
+    print("is null")
+    return()
+  }
+  print("passed")
+  return(res$result)
+}
+
+testmap<-map_dfr(df_with_flaw, ~wrapper(.x))
+
+#QUestion: how does map_dfr deal with 1 null? 
+#Answer: deals well, returns anyways
+df_with_flaw<-df_as_list
+df_with_flaw$`1`$case_number=NULL
+sample_row<-df_as_list$`2`
+testresult<-safe_self(sample_row)
 ```
 
 
