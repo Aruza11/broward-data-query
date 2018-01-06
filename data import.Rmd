@@ -12,7 +12,7 @@ Try executing this chunk by clicking the *Run* button within the chunk or by pla
 library(tidyverse)
 library(httr)
 library(jsonlite)
-#library(xml2)
+library(xml2)
 library(XML)
 library(magrittr)
 ```
@@ -31,7 +31,6 @@ df_as_list<-sample%>%
 
 
 Querying data for events and documents (used for failure to appear)
-safe_api_call(casenumber, request_type) casenumber is a string
 PROBLEM: find case with lots of charges, see if 2nd page is generated 
 ```{r}
 setwd("C:/Users/Caroline Wang/OneDrive/Duke/Criminal Recidivism/broward-data-query/events_docs_data")
@@ -51,6 +50,12 @@ write.csv(eventsdescrp_df,"sample_eventsdescrp_df.csv")
 
 ```
 
+
+
+
+
+
+
 Querying data for dispositions (for convictions)
 ```{r}
 setwd("C:/Users/Caroline Wang/OneDrive/Duke/Criminal Recidivism/broward-data-query/disps_data")
@@ -62,11 +67,15 @@ dispositions_df<-map_dfr(df_as_list, ~wrapper(.x,"crim_dispositions","xml"))
 ```
 
 ```{r}
-eventsdescrp_df<-select(dispositions_df, person_id,case_num,EventDate)
+dispositions_df<-rename(dispositions_df, JudgementDate=X1,Description=X2)
 write.csv(dispositions_df,"sample_disp_df.csv")
 #rm(dispositions_df)
 ```
 
+
+
+
+**FUNCTIONS**
 *wrapper()* uses all the functions specified below to make call to Broward Clerk's Office site, write the data string to the system, and process it into a dataframe. Wrapped the safely 'version' of api_call to process the list result (returned by safe_api_call) into a dataframe. 
  
 ```{r}
@@ -162,6 +171,9 @@ xml_as_df<-function(filename,case.number,person.id){
 }
 ```
 
+
+
+**TESTING CODE**
 Test call to api
 ```{r}
 pb <- progress_estimated(length(1))
@@ -177,7 +189,6 @@ testdf<-api_call(row ,request)
 
 #result<-json_as_df(json_string, request,casenum,personid)
 ```
-
 Test map_dfr
 ```{r}
 #takes mpg as input and returns a df
@@ -239,7 +250,6 @@ sample_row<-df_as_list$`2`
 testresult<-safe_self(sample_row)
 ```
 
-
 Test processing events_docs with jsonlite
 Findings: json_fromfile is the same as json_fromurl
 Either way i do it, should probably do the http request just so I can check status
@@ -259,7 +269,6 @@ names(json_df$PartyList[1])
 #$EventDocumentList, $EventDocumentList$Name, $EventDocumentList$Page, $eventDocument$Confidential
 
 ```
-
 Test processing crim_dispositions with jsonlite package
 ```{r}
 disp<-get_data(casenum,request,"json")
