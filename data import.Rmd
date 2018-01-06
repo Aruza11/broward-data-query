@@ -12,6 +12,8 @@ Try executing this chunk by clicking the *Run* button within the chunk or by pla
 library(tidyverse)
 library(httr)
 library(jsonlite)
+#library(xml2)
+library(XML)
 library(magrittr)
 ```
 
@@ -19,14 +21,12 @@ library(magrittr)
 loopdf<-read.csv(file="loopdf.csv") 
 loopdf<-select(loopdf, person_id, case_number)
 
-sample<-slice(loopdf,1:2)
+sample<-slice(loopdf,1:10)
 sample$case_number<-as.character(sample$case_number)
 sample$person_id<-as.numeric(sample$person_id)
 df_as_list<-sample%>%
               split(seq(nrow(.)))%>%
               lapply(as.vector)
-
-
 ```
 
 
@@ -39,41 +39,7 @@ setwd("C:/Users/Caroline Wang/OneDrive/Duke/Criminal Recidivism/broward-data-que
 
 pb <- progress_estimated(length(sample$case_number))
 #personid<-person.id<-df_as_list$'1'$person_id[1]
-
-api_call<-function(sample_row,request){
-  options(error=recover)
-  pb$tick()$print()
-  
-  Sys.sleep(sample(seq(0.5, 2.5, 0.5), 1)) #time delay between calls
-  
-  person.id<-sample_row$person_id
-  case.number<-sample_row$case_number
-  eventsdocs<-getJSON(case.number ,request)
-  file<-writeToSystem(eventsdocs,case.number,"eventsdocs.txt") #saves file to system using casenum and 
-#request type in the name
-  json_fromfile<-fromJSON(txt=file)
-  #a list df hybrid
-  json_df<-json_fromfile%>%
-              use_series(EventList)%>%  #the magrittr version of $ operator
-              mutate(case_num=case.number, person_id=person.id)
-  return(json_df)
-}
-
-safe_api_call<-safely(api_call)
-
-wrapper<-function(sample_row,request){
-  options(error=recover)
-  res<-safe_api_call(sample_row,request)
-  if(is.null(res$result)){
-    return()
-  }
-  return(res$result)
-}
-
-eventsdocs_df<-map_dfr(df_as_list, ~wrapper(.x,"events_and_documents"))
-
-#sample_row<-df_as_list$`2`
-#testresult<-safe_api_call(sample_row,"events_and_documents")
+eventsdocs_df<-map_dfr(df_as_list, ~wrapper(.x,"events_and_documents","json"))
 
 ```
 
@@ -87,11 +53,11 @@ write.csv(eventsdescrp_df,"sample_eventsdescrp_df.csv")
 
 Querying data for dispositions (for convictions)
 ```{r}
-setwd("C:/Users/Caroline Wang/OneDrive/Duke/Criminal Recidivism/broward-data-query/events_docs_data")
+setwd("C:/Users/Caroline Wang/OneDrive/Duke/Criminal Recidivism/broward-data-query/disps_data")
 #so that writeToSystem writes to correct place
 
 pb <- progress_estimated(length(sample$case_number))
-dispositions_df<-map_dfr(df_as_list, ~wrapper(.x,"crim_dispositions"))
+dispositions_df<-map_dfr(df_as_list, ~wrapper(.x,"crim_dispositions","xml"))
 
 ```
 
@@ -101,45 +67,115 @@ write.csv(dispositions_df,"sample_disp_df.csv")
 #rm(dispositions_df)
 ```
 
-
-*this function returns a json string from the Broward Clerk's website *
+*wrapper()* uses all the functions specified below to make call to Broward Clerk's Office site, write the data string to the system, and process it into a dataframe. Wrapped the safely 'version' of api_call to process the list result (returned by safe_api_call) into a dataframe. 
+ 
 ```{r}
-getJSON<-function(casenumber,request_type){
+api_call<-function(sample_row,request,data_type){
+  options(error=recover)
+  pb$tick()$print()
+  
+  Sys.sleep(sample(seq(0.5, 2.5, 0.5), 1)) #time delay between calls
+  
+  person.id<-sample_row$person_id
+  case.number<-sample_row$case_number
+  data<-get_data(case.number ,request,data_type)
+  filename<-writeToSystem(data,case.number,paste(request,".txt",sep=""),data_type) #saves file to system using casenum and request type in the name; returns filename
+  
+  if (data_type=="json"){
+    json_fromfile<-fromJSON(txt=filename)
+   #a list df hybrid
+    json_df<-json_as_df(json_fromfile,case.number,person.id)
+    return(json_df)
+  }
+  else if (data_type=="xml"){
+    xml_df<-xml_as_df(filename,case.number,person.id)
+  }
+}
+
+safe_api_call<-safely(api_call)
+
+wrapper<-function(sample_row,request,data_type){
+  options(error=recover)
+  res<-safe_api_call(sample_row,request,data_type)
+  if(is.null(res$result)){
+    return()
+  }
+  return(res$result)
+}
+
+```
+
+*get_data* returns a json/xml string from the Broward Clerk's website through HTTP GET request
+*writeToSystem* takes a json HTTP response and saves it as .txt file 
+a "void" function, but prints the filename
+*data_as_df* processes json/xml string into a dataframe 
+(different processing needed for events_docs and crim_dispositions)
+
+```{r}
+get_data<-function(casenumber,request_type, data_type){
   url_broward<-"https://api.browardclerk.org/api/"
   key<-"Lo5Mt6EEJIwDILvpusItyvDntLsLqMwuMGzrvLFDsKzDsnypquI3JD6CLKoopLxwvnypttCKEqGnGs6sF9EKFnr21qD4MJFnvEwovDwqtp73nzCtyEGzJrsy8K4rsD9tFEGvKp8pspEyxrGw0oxtEF2HFoD1KrHGGExttDHJCF2yz1zoDuDxnpxnuwsJo8rK7H1GspGGIxxFztDLutDyqHGDrvF3sHJsyxwzLCwDJnMCnMw3CMsHvzrLEK"
-  url=paste0(url_broward,'case/',casenumber,'/',request_type,'.json?auth_key=',key)
-  print(url)
+  url=paste0(url_broward,'case/',casenumber,'/',request_type,'.',data_type,'?auth_key=',key)
+#  print(url)
   eventsdocs<-RETRY("GET", url,times=5)
     #retries until http_error (boolean) returns false; true if status code is 400+
     #retries max of 5x; 1 sec pauses between tries
   return(eventsdocs) #r automatically returns last line but we'll explicitly return this here
 }
 
-```
-
-takes a json HTTP response and saves it as .txt file 
-a "void" function
-```{r}
-writeToSystem<-function(json_response,casenumber, filetype){
-  filename=paste(casenumber,filetype, sep="")
-  raw<-content(json_response,"raw")
-#  invisible(writeBin(raw, filename))
+writeToSystem<-function(web_response,casenumber, filetype,data_type){
+  filename=paste(casenumber,filetype,"_",data_type, sep="")
+  raw<-content(web_response,"raw")
   writeBin(raw,filename)
   return(filename)
 }
-```
 
+json_as_df<-function(data_fromfile,case.number,person.id){
+     json_df<-data_fromfile%>%
+              use_series(EventList)%>%  #the magrittr version of $ operator
+              mutate(case_num=case.number, person_id=person.id)
+     return(json_df)
+}
+
+xml_as_df<-function(filename,case.number,person.id){
+  xmlList<-filename%>%
+            read_xml()%>%
+            xmlTreeParse%>%
+            use_series(doc)%>%
+            use_series(children)%>%
+            use_series(string)%>%
+            xmlToList%>%
+            xmlParse%>%
+            xmlToList
+
+  xml_chargeDispList<-xmlList$ChargeDispositionList
+  #displist<- xml_chargeDispList$DispositionList
+  xml_df<-xml_chargeDispList%>%
+                use_series(DispositionList)%>%
+                unlist()%>%
+                matrix(nrow=1,byrow=T)%>%
+                data.frame(stringsAsFactors=F)%>%
+                mutate(case_num=case.number,
+                       person_id=person.id,
+                       OffenseDate=xml_chargeDispList$Offense_Date,
+                       Charge=xml_chargeDispList$Charge)
+}
+```
 
 Test call to api
 ```{r}
 pb <- progress_estimated(length(1))
 
-casenum<-"09083797TI30A"
-request="crim_dispositions"
-disp<-getJSON(casenum,request)
+# casenum<-"09083797TI30A"
+#personid<-1
+# request="crim_dispositions"
+#disp<-getJSON(casenum,request)
 #writeToSystem(eventsdocs,casenum,"eventsdocs.txt")
-row<-slice(sample,1:1)
+#row<-slice(sample,1:1)
+
 testdf<-api_call(row ,request)
+
+#result<-json_as_df(json_string, request,casenum,personid)
 ```
 
 Test map_dfr
@@ -224,12 +260,63 @@ names(json_df$PartyList[1])
 
 ```
 
-Test processing crim_dispositions with jsonlite
+Test processing crim_dispositions with jsonlite package
 ```{r}
-disp<-getJSON(casenum,request)
-filename=writeToSystem(disp,casenum,request)
+disp<-get_data(casenum,request,"json")
+filename=writeToSystem(disp,casenum,request,"json")
 json_string<-fromJSON(txt=filename)
-json_df<-json_string$ChargeDispositionLists
-listelem<-as_data_frame(json_df$PleaList)
+
+json_df<-json_string$ChargeDispositionList
+dispo_df<-select(json_df,Charge,Offense_Date,DispositionList)
+disps<-json_df$DispositionList
+View(disps)
+#listolists<-select(json_df,DispositionList,PleaList,SentenceList)
+listelem <- disps%>%
+                do.call(rbind.data.frame, .)%>%
+                mutate(case_num=json_string$Case_Number,
+                       #person_id=,
+                       OffenseDate=json_df$Offense_Date,
+                       Charge=json_df$Charge)
+View(listelem)
+
 ```
+
+Test processing crim_dispositions with xml2 and XML packages
+```{r}
+#casenum="09083797TI30A"
+#request="crim_dispositions"
+disp<-get_data(casenum, request,"xml" )
+filename<-writeToSystem(disp,casenum,request,"xml")
+
+xmlList<-filename%>%
+            read_xml()%>%
+            xmlTreeParse%>%
+            use_series(doc)%>%
+            use_series(children)%>%
+            use_series(string)%>%
+            xmlToList%>%
+            xmlParse%>%
+            xmlToList
+
+xml_chargeDispList<-xmlList$ChargeDispositionList
+#displist<- xml_chargeDispList$DispositionList
+
+
+xml_df<-xml_chargeDispList%>%
+                use_series(DispositionList)%>%
+                unlist()%>%
+                matrix(nrow=1,byrow=T)%>%
+                data.frame(stringsAsFactors=F)%>%
+                mutate(case_num=xmlList$Case_Number,
+                       #person_id=,
+                       OffenseDate=xml_chargeDispList$Offense_Date,
+                       Charge=xml_chargeDispList$Charge)
+
+#col1<-as.character(xml_df$c..01.08.2010....Convicted.by.Plea...Adjudicated..)
+testdf<-data.frame(matrix(unlist(displist), nrow=1, byrow=T),stringsAsFactors=FALSE)
+#tibble<- as_data_frame(unlist(displist))
+
+
+```
+
 
